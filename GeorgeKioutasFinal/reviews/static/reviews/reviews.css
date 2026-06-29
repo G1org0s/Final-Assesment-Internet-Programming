@@ -1,0 +1,30 @@
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Tahoma, Arial, sans-serif;
+}
+
+main {
+    flex: 1;
+}
+
+.reviews-section {
+    background-color: #e9f8fb;
+}
+
+#reviewsList {
+    height: 500px;
+    overflow-y: auto;
+}
+
+#reviewsList table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+#reviewsList th,
+#reviewsList td {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}

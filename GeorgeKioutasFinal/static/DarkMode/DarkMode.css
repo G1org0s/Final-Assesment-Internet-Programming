@@ -1,0 +1,131 @@
+/* Main dark mode background */
+.dark-mode {
+    background-color: #121212;
+    color: white;
+}
+
+/* Header in dark mode */
+.dark-mode header {
+    background-color: #111111 !important;
+}
+
+/* Navbar links in dark mode */
+.dark-mode nav .btn-light {
+    background-color: #2b2b2b;
+    color: white;
+    border-color: #444;
+}
+
+/* Navbar link hover in dark mode */
+.dark-mode nav .btn-light:hover {
+    background-color: #0dcaf0;
+    color: black;
+}
+
+/* Dark mode button when dark mode is active */
+.dark-mode #darkModeToggle {
+    background-color: white;
+    color: black;
+}
+
+/* Light Bootstrap sections become dark */
+.dark-mode .bg-light {
+    background-color: #1e1e1e !important;
+    color: white;
+}
+
+/* Cards in dark mode */
+.dark-mode .card {
+    background-color: #252525;
+    color: white;
+    border-color: #444;
+}
+
+/* Forms in dark mode */
+.dark-mode .form-control,
+.dark-mode .form-select {
+    background-color: #252525;
+    color: white;
+    border-color: #555;
+}
+
+/* Input example text stays visible in dark mode */
+.dark-mode .form-control::placeholder {
+    color: white;
+    opacity: 1;
+}
+
+/* Keep the calendar icon visible in dark mode */
+.dark-mode input[type="date"] {
+    color-scheme: dark;
+}
+
+/* Table in dark mode */
+.dark-mode .table * {
+    background-color: #252525 !important;
+    color: white !important;
+    border-color: #444 !important;
+}
+
+/* Table heading in dark mode */
+.dark-mode .table-info th {
+    background-color: #111111 !important;
+    color: white !important;
+}
+
+/* Task List title in dark mode */
+.dark-mode .task-list-title {
+    color: rgb(255, 255, 255);
+}
+
+/* Footer in dark mode */
+.dark-mode footer {
+    background-color: #111111 !important;
+    color: white !important;
+}
+
+/* Home hero text stays black in dark mode */
+.dark-mode .hero-content * {
+    color: #111111 !important;
+}
+
+/* Results cards for trips*/
+
+.result-dark {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+}
+
+
+/* Readable results in dark mode for trips*/
+
+.dark-mode .result-card {
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #111111;
+
+}
+
+
+/* Dark mode about the about page */
+
+.dark-mode .about-section {
+    background-color: #181818;
+}
+
+/* Dark mode about section in contuct page */
+.dark-mode .contact-section {
+    background-color: #181818;
+}
+
+/* Dark mode about section in analytics page */
+
+.dark-mode .analytics-section {
+    background-color: #181818;
+}
+
+
+/* Dark mode about section in reviews page */
+
+.dark-mode .reviews-section {
+    background-color: #181818;
+}

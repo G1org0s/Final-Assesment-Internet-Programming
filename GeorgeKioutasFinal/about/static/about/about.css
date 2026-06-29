@@ -1,0 +1,29 @@
+body {
+    font-family: Tahoma, Arial, sans-serif;
+}
+
+.about-section {
+    background-color: #e9f8fb;
+}
+
+.about-section img {
+    width: 100%;
+    height: 360px;
+    object-fit: cover;
+}
+
+.team-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.carousel-image {
+    height: 500px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.kiato-carousel-image {
+    object-position: center top;
+}

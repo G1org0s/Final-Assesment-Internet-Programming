@@ -17,13 +17,23 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from home import views
+from trips import views as trips_views
+from analytics import views as analytics_views
+from reviews import views as reviews_views
+from about import views as about_views
+from contact import views as contact_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
 
+    # Empty path opens the home page first.
     path("", views.home, name="home"),       # opens at http://127.0.0.1:8000/
     path("home/", views.home, name="home"),  # opens at http://127.0.0.1:8000/home/
 
-    path("about/", views.about, name="about"),
-    path("tasks/", views.index, name="tasks"),
+    # Each path connect a page name with the correct view function.
+    path("trips/", trips_views.trips, name="trips"),
+    path("analytics/", analytics_views.analytics, name="analytics"),
+    path("reviews/", reviews_views.reviews, name="reviews"),
+    path("about/", about_views.about, name="about"),
+    path("contact/", contact_views.contact, name="contact"),
 ]

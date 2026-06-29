@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-import os
 from pathlib import Path
 
 
@@ -34,9 +33,13 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
 
 
-    'tasks',
+    # These are the pages/apps made for the final project.
     'home',
-
+    'trips',
+    'analytics',
+    'reviews',
+    'about',
+    'contact',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -61,6 +64,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / 'templates'],
+        # This lets Django find templates inside each app folder.
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,6 +126,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# This is for the shared files like DarkMode and Navbar.
 STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static')
+    BASE_DIR / 'static'
 ]
