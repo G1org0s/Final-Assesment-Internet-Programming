@@ -129,3 +129,43 @@
 .dark-mode .reviews-section {
     background-color: #181818;
 }
+
+/* Dark mode about section in shop page */
+.dark-mode .shop-main {
+    background-color: #181818;
+}
+
+.dark-mode .shop-section {
+    background-color: #181818;
+}
+
+/* Shop category buttons in dark mode */
+.dark-mode .shop-section .category-card,
+.dark-mode .shop-section .category-card span {
+    color: white !important;
+}
+
+/* Shop results in dark mode */
+.dark-mode .shop-section .results-area h2 {
+    color: white !important;
+}
+
+.dark-mode .shop-section .product-card {
+    background-color: #242424 !important;
+    color: white !important;
+    border-color: #444444 !important;
+}
+
+.dark-mode .shop-section .product-card * {
+    color: white !important;
+}
+
+.dark-mode .shop-section .category-content-panel {
+    background-color: #202020 !important;
+    border-color: #444444 !important;
+}
+
+.dark-mode .shop-section .filter-bar {
+    background-color: #1f3a40 !important;
+    border-color: #35656f !important;
+}

@@ -14,9 +14,8 @@
 
     <link rel="stylesheet" href="{% static 'trips/trips.css' %}">
     <link rel="stylesheet" href="{% static 'DarkMode/DarkMode.css' %}">
-    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}" defer></script>
+    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}?v=3" defer></script>
     <script src="{% static 'DarkMode/Darkmode.js' %}" defer></script>
-    <script src="{% static 'trips/trips.js' %}" defer></script>
 </head>
 <body>
     <header class="bg-info text-white sticky-top">
@@ -35,45 +34,39 @@
                 <div class="trip-board card shadow-lg p-4">
                     <h1 class="text-center fw-bold mb-4">Plan the Fishing Trip</h1>
 
-                    <form id="tripForm">
+                    <!-- This form sends data to the trips url by its nickname. -->
+                    <form action="{% url 'trips:trips' %}" method="post">
+                        <!-- CSRF token protects the POST form from fake submits. -->
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="add">
+                        <!-- These show errors that are not for only one field. -->
+                        {{ form.non_field_errors }}
                         <div class="row g-4">
                             <div class="col-md-6">
-                                <label for="tripName" class="form-label">Trip Name</label>
-                                <input type="text"
-                                       class="form-control"
-                                       id="tripName"
-                                       placeholder="Ex. Peloponnese"
-                                       maxlength="30"
-                                       required>
+                                <!-- Django makes the label and input from TripForm. -->
+                                {{ form.trip_name.label_tag }}
+                                {{ form.trip_name }}
+                                {{ form.trip_name.errors }}
                             </div>
 
                             <div class="col-md-6">
-                                <label for="tripLocation" class="form-label">Trip Location</label>
-                                <input type="text"
-                                       class="form-control"
-                                       id="tripLocation"
-                                       placeholder="Ex. Pylos"
-                                       maxlength="30"
-                                       required>
+                                {{ form.trip_location.label_tag }}
+                                {{ form.trip_location }}
+                                {{ form.trip_location.errors }}
                             </div>
 
                             <div class="col-md-6">
-                                <label for="tripDate" class="form-label">Trip Date</label>
-                                <input type="date"
-                                       class="form-control"
-                                       id="tripDate"
-                                       required>
+                                {{ form.trip_date.label_tag }}
+                                {{ form.trip_date }}
+                                {{ form.trip_date.errors }}
                             </div>
 
                             <div class="col-md-6">
-                                <label for="tripDescription" class="form-label">Trip Description</label>
-                                <input type="text"
-                                       class="form-control"
-                                       id="tripDescription"
-                                       placeholder="Ex. Area known for sea breams"
-                                       maxlength="50"
-                                       required>
+                                {{ form.trip_description.label_tag }}
+                                {{ form.trip_description }}
+                                {{ form.trip_description.errors }}
                             </div>
+
                         </div>
 
                         <button type="submit" class="btn btn-success text-white mt-4 w-100">
@@ -86,7 +79,7 @@
                             <div class="card result-card">
                                 <div class="card-body">
                                     <h2 class="h6">Today's Athens Weather</h2>
-                                    <p id="weatherResult" class="fw-bold">-</p>
+                                    <p class="fw-bold mb-0">{{ weather_text }}</p>
                                 </div>
                             </div>
                         </div>
@@ -97,7 +90,8 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h2 class="h5">Total Trips</h2>
-                                    <p id="totalTrips" class="fs-3 fw-bold mb-0">0</p>
+                                    <!-- length counts how many trips are inside the list. -->
+                                    <p class="fs-3 fw-bold mb-0">{{ trips|length }}</p>
                                 </div>
                             </div>
                         </div>
@@ -106,8 +100,8 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h2 class="h5">Trip Status</h2>
-                                    <p class="mb-1">Pending: <span id="pendingTrips">0</span></p>
-                                    <p class="mb-0">Completed: <span id="completedTrips">0</span></p>
+                                    <p class="mb-1">Pending: {{ pending_count }}</p>
+                                    <p class="mb-0">Completed: {{ completed_count }}</p>
                                 </div>
                             </div>
                         </div>
@@ -115,11 +109,13 @@
 
                     <div class="row justify-content-center mt-4">
                         <div class="col-md-4">
-                            <label for="sortTrips" class="form-label fw-bold">Sort Trips by Date</label>
-                            <select id="sortTrips" class="form-select">
-                                <option value="earliest">Earliest First</option>
-                                <option value="latest">Latest First</option>
-                            </select>
+                            <!-- This form sorts the trip list by date. -->
+                            <form action="{% url 'trips:trips' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="sort">
+                                {{ sort_form.sort_order.label_tag }}
+                                {{ sort_form.sort_order }}
+                            </form>
                         </div>
                     </div>
 
@@ -137,7 +133,27 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="pendingTripsTable"></tbody>
+                                    <tbody>
+                                        <!-- This loop shows only trips that are still pending. -->
+                                        {% for trip in trips %}
+                                            {% if trip.trip_status == "Pending" %}
+                                                <tr>
+                                                    <td>{{ trip.trip_name }}</td>
+                                                    <td>{{ trip.trip_location }}</td>
+                                                    <td>{{ trip.trip_date }}</td>
+                                                    <td>
+                                                        <!-- This form moves a trip to completed. -->
+                                                        <form action="{% url 'trips:trips' %}" method="post" class="d-inline">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="action" value="complete">
+                                                            <input type="hidden" name="trip_id" value="{{ trip.trip_id }}">
+                                                            <button type="submit" class="btn btn-info btn-sm">Complete</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -155,7 +171,27 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="completedTripsTable"></tbody>
+                                    <tbody>
+                                        <!-- This loop shows only trips that are completed. -->
+                                        {% for trip in trips %}
+                                            {% if trip.trip_status == "Completed" %}
+                                                <tr>
+                                                    <td>{{ trip.trip_name }}</td>
+                                                    <td>{{ trip.trip_location }}</td>
+                                                    <td>{{ trip.trip_date }}</td>
+                                                    <td>
+                                                        <!-- This form removes a completed trip. -->
+                                                        <form action="{% url 'trips:trips' %}" method="post" class="d-inline">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="action" value="delete">
+                                                            <input type="hidden" name="trip_id" value="{{ trip.trip_id }}">
+                                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

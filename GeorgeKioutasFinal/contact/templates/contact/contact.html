@@ -14,9 +14,8 @@
 
     <link rel="stylesheet" href="{% static 'contact/contact.css' %}">
     <link rel="stylesheet" href="{% static 'DarkMode/DarkMode.css' %}">
-    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}" defer></script>
+    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}?v=3" defer></script>
     <script src="{% static 'DarkMode/Darkmode.js' %}" defer></script>
-    <script src="{% static 'contact/contact.js' %}" defer></script>
 </head>
 <body>
     <header class="bg-info text-white sticky-top">
@@ -39,25 +38,39 @@
                         <div class="card h-100 shadow p-4">
                             <h2 class="h4 fw-bold mb-4">Send a Message</h2>
 
-                            <form id="contactForm">
+                            <!-- Show success text only after the form is sent correct. -->
+                            {% if message_sent %}
+                                <p class="alert alert-success">{{ message_sent }}</p>
+                            {% endif %}
+
+                            <!-- The form sends the data to contact using the url nickname. -->
+                            <form action="{% url 'contact:contact' %}" method="post">
+                                <!-- CSRF token is used for security in POST forms. -->
+                                {% csrf_token %}
+                                {{ form.non_field_errors }}
                                 <div class="mb-3">
-                                    <label for="contactName" class="form-label">Name</label>
-                                    <input type="text" id="contactName" name="name" class="form-control" placeholder="Enter your name" minlength="2" maxlength="30" required>
+                                    <!-- The input and errors are made by ContactForm. -->
+                                    {{ form.name.label_tag }}
+                                    {{ form.name }}
+                                    {{ form.name.errors }}
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="contactEmail" class="form-label">Email</label>
-                                    <input type="email" id="contactEmail" name="email" class="form-control" placeholder="Enter your email" maxlength="100" required>
+                                    {{ form.email.label_tag }}
+                                    {{ form.email }}
+                                    {{ form.email.errors }}
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="contactSubject" class="form-label">Subject</label>
-                                    <input type="text" id="contactSubject" name="subject" class="form-control" placeholder="Enter the subject" minlength="3" maxlength="30" required>
+                                    {{ form.subject.label_tag }}
+                                    {{ form.subject }}
+                                    {{ form.subject.errors }}
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="contactMessage" class="form-label">Message</label>
-                                    <textarea id="contactMessage" name="message" class="form-control" rows="5" placeholder="Max. 200 characters" minlength="10" maxlength="200" required></textarea>
+                                    {{ form.message.label_tag }}
+                                    {{ form.message }}
+                                    {{ form.message.errors }}
                                 </div>
 
                                 <button type="submit" class="btn btn-info w-100">Send Message</button>
@@ -105,3 +118,4 @@
     </footer>
 </body>
 </html>
+

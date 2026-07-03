@@ -15,25 +15,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from home import views
-from trips import views as trips_views
-from analytics import views as analytics_views
-from reviews import views as reviews_views
-from about import views as about_views
-from contact import views as contact_views
 
+# This is the main urls file for the whole Django project.
 urlpatterns = [
+    # Admin page that Django creates.
     path("admin/", admin.site.urls),
 
     # Empty path opens the home page first.
-    path("", views.home, name="home"),       # opens at http://127.0.0.1:8000/
-    path("home/", views.home, name="home"),  # opens at http://127.0.0.1:8000/home/
+    path("", views.home, name="home"),      
 
-    # Each path connect a page name with the correct view function.
-    path("trips/", trips_views.trips, name="trips"),
-    path("analytics/", analytics_views.analytics, name="analytics"),
-    path("reviews/", reviews_views.reviews, name="reviews"),
-    path("about/", about_views.about, name="about"),
-    path("contact/", contact_views.contact, name="contact"),
+    #each app keeps its own page urls here.
+    path("", include("home.urls")),
+    path("", include("trips.urls")),
+    path("", include("analytics.urls")),
+    path("", include("reviews.urls")),
+    path("", include("about.urls")),
+    path("", include("contact.urls")),
+    path("", include("shop.urls")),
 ]

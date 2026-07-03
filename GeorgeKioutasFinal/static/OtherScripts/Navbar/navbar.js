@@ -17,6 +17,7 @@ navbar.innerHTML = `
         <div class="collapse navbar-collapse" id="mainNavbar">
             <div class="d-grid d-lg-flex gap-2 gap-lg-3 mt-3 mt-lg-0">
                 <a href="/home/" class="btn btn-light">Home</a>
+                <a href="/shop/" class="btn btn-light">Shop</a>
                 <a href="/trips/" class="btn btn-light">Trips</a>
 
                 <!-- The extra pages are here so navbar dont get too full. -->

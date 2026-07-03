@@ -28,3 +28,12 @@ main {
     white-space: normal;
     overflow-wrap: anywhere;
 }
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+}

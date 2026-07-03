@@ -14,9 +14,8 @@
 
     <link rel="stylesheet" href="{% static 'reviews/reviews.css' %}">
     <link rel="stylesheet" href="{% static 'DarkMode/DarkMode.css' %}">
-    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}" defer></script>
+    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}?v=3" defer></script>
     <script src="{% static 'DarkMode/Darkmode.js' %}" defer></script>
-    <script src="{% static 'reviews/reviews.js' %}" defer></script>
 </head>
 <body>
     <header class="bg-info text-white sticky-top">
@@ -39,34 +38,40 @@
                         <div class="card shadow p-4 h-100">
                             <h2 class="h4 fw-bold mb-4">Write a Review</h2>
 
-                            <form id="reviewForm">
+                            <!-- The form action uses the reviews url nickname. -->
+                            <form action="{% url 'reviews:reviews' %}" method="post">
+                                <!-- CSRF token is needed because this form uses POST. -->
+                                {% csrf_token %}
+                                {{ form.non_field_errors }}
                                 <div class="mb-3">
-                                    <label for="reviewName" class="form-label">Name</label>
-                                    <input type="text" id="reviewName" class="form-control" placeholder="Enter your name" minlength="2" maxlength="30" required>
+                                    <!-- These fields come from ReviewForm in views.py. -->
+                                    {{ form.name.label_tag }}
+                                    {{ form.name }}
+                                    {{ form.name.errors }}
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="reviewLocation" class="form-label">Location</label>
-                                    <input type="text" id="reviewLocation" class="form-control" placeholder="Ex. Pylos" minlength="2" maxlength="30" required>
+                                    {{ form.location.label_tag }}
+                                    {{ form.location }}
+                                    {{ form.location.errors }}
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="fishCaught" class="form-label">Fish Caught</label>
-                                    <input type="text" id="fishCaught" class="form-control" placeholder="Ex. Sea bream" maxlength="80" required>
+                                    {{ form.fish.label_tag }}
+                                    {{ form.fish }}
+                                    {{ form.fish.errors }}
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="reviewMessage" class="form-label">Message</label>
-                                    <textarea id="reviewMessage" class="form-control" rows="5" placeholder="Max. 200 characters" minlength="10" maxlength="200" required></textarea>
+                                    {{ form.message.label_tag }}
+                                    {{ form.message }}
+                                    {{ form.message.errors }}
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="recommendTrip" class="form-label">Would you recommend this location?</label>
-                                    <select id="recommendTrip" class="form-select" required>
-                                        <option value="">Choose an answer</option>
-                                        <option value="Yes">Yes</option>
-                                        <option value="No">No</option>
-                                    </select>
+                                    {{ form.recommend.label_tag }}
+                                    {{ form.recommend }}
+                                    {{ form.recommend.errors }}
                                 </div>
 
                                 <button type="submit" class="btn btn-info w-100">Submit Review</button>
@@ -78,12 +83,9 @@
                         <div class="card shadow p-4 h-100">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h2 class="h4 fw-bold mb-0">Saved Reviews</h2>
-                                <button type="button" id="clearReviews" class="btn btn-danger btn-sm">Clear Reviews</button>
                             </div>
 
                             <div id="reviewsList" class="table-responsive">
-                                <p id="noReviewsMessage">No reviews have been submitted yet.</p>
-
                                 <table class="table table-bordered">
                                     <thead class="table-info">
                                         <tr>
@@ -94,7 +96,23 @@
                                             <th>Recommend</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="reviewsTable"></tbody>
+                                    <tbody>
+                                        <!-- Django prints one table row for every saved review. -->
+                                        {% for review in reviews %}
+                                            <tr>
+                                                <td>{{ review.name }}</td>
+                                                <td>{{ review.location }}</td>
+                                                <td>{{ review.fish }}</td>
+                                                <td>{{ review.message }}</td>
+                                                <td>{{ review.recommend }}</td>
+                                            </tr>
+                                        {% empty %}
+                                            <!-- This is shown when the list has no reviews yet. -->
+                                            <tr>
+                                                <td colspan="5">No reviews have been submitted yet.</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

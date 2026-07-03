@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Fish The.Box is a simple fishing trip management app">
+    <meta name="description" content="Fish The.Box is a simple fishing trip app and fishing gear shop">
     <meta name="author" content="George Kioutas">
     <title>Fish The.Box / Home Page</title>
 
@@ -14,7 +14,7 @@
 
     <link rel="stylesheet" href="{% static 'home/home.css' %}">
     <link rel="stylesheet" href="{% static 'DarkMode/DarkMode.css' %}">
-    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}" defer></script>
+    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}?v=3" defer></script>
     <script src="{% static 'DarkMode/Darkmode.js' %}" defer></script>
     <script src="{% static 'home/home.js' %}" defer></script>
 </head>
@@ -43,13 +43,16 @@
             <div class="hero-content container">
                 <h1 class="display-5 fw-bold mb-4">Welcome to Fish The.Box</h1>
                 <p class="lead">
-                    Use <strong>Fish The.Box</strong> to manage your fishing trips and improve your fishing experience.
+                    <strong>Fish The.Box</strong> is a simple fishing trip app and also an e-shop for fishing gear.
+                </p>
+                <p class="lead">
+                    Use <strong>Fish The.Box</strong> to manage your fishing trips, browse fishing products, and improve your fishing experience.
                 </p>
                 <p class="lead">
                     Organize your next fishing trip and plan it according to your needs.
                 </p>
-                <a href="/trips/" class="btn btn-info btn-lg btn-outline-light mt-3">
-                    <strong>View Trips</strong>
+                <a href="/shop/" class="btn btn-info btn-lg btn-outline-light mt-3">
+                    <strong>Shop Now</strong>
                 </a>
             </div>
         </article>
@@ -58,7 +61,7 @@
             <div class="container">
                 <h2 class="text-center mb-4 fw-bold">What can Fish The.Box do for you?</h2>
                 <div class="row g-4">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card h-100 shadow-sm bg-light">
                             <div class="card-body">
                                 <h3 class="card-title h5 fw-bold">Trip Creation</h3>
@@ -67,7 +70,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card h-100 shadow-sm bg-light">
                             <div class="card-body">
                                 <h3 class="card-title h5 fw-bold">Trip Organization</h3>
@@ -76,11 +79,20 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card h-100 shadow-sm bg-light">
                             <div class="card-body">
                                 <h3 class="card-title h5 fw-bold">Progress Tracking</h3>
                                 <p class="card-text">Check your latest activity and see which trips are pending or completed.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card h-100 shadow-sm bg-light">
+                            <div class="card-body">
+                                <h3 class="card-title h5 fw-bold">Fishing Shop</h3>
+                                <p class="card-text">Browse fishing gear from the shop and find items such as rods, reels, lines, lures, and accessories.</p>
                             </div>
                         </div>
                     </div>
@@ -92,7 +104,21 @@
             <div class="container">
                 <h2 class="mb-4">Latest Activity</h2>
                 <ul id="lastActivity" class="list-group">
-                    <li class="list-group-item">No recent activity</li>
+                    <!-- Home page gets trips from views.py and shows them here. -->
+                    {% for trip in trips %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ trip.trip_name }} - {{ trip.trip_location }} ({{ trip.trip_date }})
+
+                            <!-- The badge changes depending on the trip status. -->
+                            {% if trip.trip_status == "Completed" %}
+                                <span class="badge bg-info text-dark">Completed</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% endif %}
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">No recent activity</li>
+                    {% endfor %}
                 </ul>
             </div>
         </article>
@@ -132,3 +158,4 @@
     </footer>
 </body>
 </html>
+

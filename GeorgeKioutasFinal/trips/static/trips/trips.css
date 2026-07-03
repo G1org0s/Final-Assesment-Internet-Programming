@@ -27,7 +27,12 @@ main {
     color: #111111;
 }
 
-.trip-board .form-control {
+.trip-board input,
+.trip-board select,
+.trip-board textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #cccccc;
     border-radius: 10px;
 }
 
