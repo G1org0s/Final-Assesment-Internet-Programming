@@ -37,7 +37,7 @@
                     <!-- These links open a different page for each main category. -->
                     {% for category in categories %}
                         <div class="col-md-2">
-                            <a href="{{ category.url }}" class="category-card">
+                            <a href="/shop/{{ category.name }}" class="category-card">
                                 <img src="{% static category.photo %}" alt="{{ category.name }}">
                                 <span>{{ category.name }}</span>
                             </a>

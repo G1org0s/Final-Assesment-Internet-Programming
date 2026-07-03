@@ -40,7 +40,7 @@
                 <div class="category-content-panel">
                 <div class="filter-bar">
                     <div class="sub-category-buttons">
-                        <p class="filter-label">Select type:</p>
+                        <p class="filter-label">Select by subcategory:</p>
                         <!-- These small forms filter this category by sub category. -->
                         {% for sub_category in sub_categories %}
                             <form action="{% url 'shop:accessories' %}" method="post">
@@ -56,14 +56,61 @@
                     </div>
                 </div>
 
+                <div class="shop-search-box mt-4">
+                    <h2 class="h5 fw-bold text-center">Search Accessories</h2>
+
+                    <!-- This form searches only inside this category page. -->
+                    <form action="{% url 'shop:accessories' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="sub_category" value="{{ selected_sub_category }}">
+
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-3">
+                                <label>Item Name</label>
+                                {{ search_form.search_name }}
+                            </div>
+                            <div class="col-md-2">
+                                <label>Brand</label>
+                                <select name="brand">
+                                    <option value="All">All brands</option>
+                                    {% for brand_name in available_brands %}
+                                        <option value="{{ brand_name }}" {% if selected_brand == brand_name %}selected{% endif %}>{{ brand_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Min Price</label>
+                                {{ search_form.min_price }}
+                            </div>
+                            <div class="col-md-2">
+                                <label>Max Price</label>
+                                {{ search_form.max_price }}
+                            </div>
+                            <div class="col-md-2">
+                                <label>Sort Price</label>
+                                {{ search_form.price_order }}
+                            </div>
+                            <div class="col-md-1">
+                                <button type="submit" name="search_button" class="btn btn-info">Search</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
                 <div class="row g-3 mt-4">
+                    {% if search_done %}
+                        <h3 class="h5 fw-bold text-center">Search Results</h3>
+                    {% endif %}
+
                     <!-- This loop prints only accessory items. -->
                     {% for shop_item in items %}
                         <div class="col-md-4">
                             <div class="product-card h-100">
-                                <h2 class="h5 fw-bold">{{ shop_item.item }}</h2>
-                                <p class="mb-1">Category: {{ shop_item.category }}</p>
-                                <p class="mb-0">Sub Category: {{ shop_item.sub_category }}</p>
+                                <h2 class="h5 fw-bold">{{ shop_item.name }}</h2>
+                                <p class="mb-1">Category: {{ shop_item.sub_category.category.name }}</p>
+                                <p class="mb-1">Brand: {{ shop_item.brand }}</p>
+                                <p class="mb-0">Price: {{ shop_item.price }} euro</p>
                             </div>
                         </div>
                     {% empty %}

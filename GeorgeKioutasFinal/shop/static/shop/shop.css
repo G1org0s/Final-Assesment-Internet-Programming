@@ -100,6 +100,26 @@ main {
     margin: 0 auto;
 }
 
+.shop-search-box {
+    background-color: #f8f9fa;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    padding: 18px;
+}
+
+.shop-search-box label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.shop-search-box input,
+.shop-search-box select {
+    width: 100%;
+    padding: 7px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+}
+
 .product-card {
     background-color: white;
     border: 1px solid #dddddd;

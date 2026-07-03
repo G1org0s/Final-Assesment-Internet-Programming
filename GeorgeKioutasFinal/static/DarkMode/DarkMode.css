@@ -169,3 +169,15 @@
     background-color: #1f3a40 !important;
     border-color: #35656f !important;
 }
+
+.dark-mode .shop-section .shop-search-box {
+    background-color: #202020 !important;
+    border-color: #444444 !important;
+}
+
+.dark-mode .shop-section .shop-search-box input,
+.dark-mode .shop-section .shop-search-box select {
+    background-color: #252525 !important;
+    color: white !important;
+    border-color: #555555 !important;
+}
