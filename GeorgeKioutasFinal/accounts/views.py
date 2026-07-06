@@ -86,6 +86,7 @@ def logout_user(request):
 
 # This view shows the profile details of the logged in user.
 def profile(request):
+    # Only logged in users can open this page.
     if not request.user.is_authenticated:
         return redirect("/login/")
 
@@ -98,6 +99,11 @@ def profile(request):
 
 # This view lets the logged in user change their profile details.
 def edit_profile(request):
+
+
+
+    
+    # Only logged in users can open this page.
     if not request.user.is_authenticated:
         return redirect("/login/")
 

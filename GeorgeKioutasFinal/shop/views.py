@@ -93,16 +93,18 @@ def show_category(request, category_name, template_name):
 
     sub_categories = ["All"]
 
-    # These are the sub categories that belong to the current page category.
-    for sub_category in SubCategory.objects.all():
-        if sub_category.category.name == category_name:
-            sub_categories.append(sub_category.name)
+    # These are the sub categories used by products in this category.
+    for shop_item in Product.objects.all():
+        category_matches = shop_item.category.name == category_name
+
+        if category_matches and shop_item.sub_category.name not in sub_categories:
+            sub_categories.append(shop_item.sub_category.name)
 
     available_brands = []
 
     # This finds only the brands that exist in the selected category/type.
     for shop_item in Product.objects.all():
-        category_matches = shop_item.sub_category.category.name == category_name
+        category_matches = shop_item.category.name == category_name
         sub_category_matches = (
             selected_sub_category == "All" or
             shop_item.sub_category.name == selected_sub_category
@@ -118,7 +120,7 @@ def show_category(request, category_name, template_name):
 
     # This loop keeps only items from the chosen category, sub category, and search filters.
     for shop_item in Product.objects.all():
-        category_matches = shop_item.sub_category.category.name == category_name
+        category_matches = shop_item.category.name == category_name
         sub_category_matches = (
             selected_sub_category == "All" or
             shop_item.sub_category.name == selected_sub_category
