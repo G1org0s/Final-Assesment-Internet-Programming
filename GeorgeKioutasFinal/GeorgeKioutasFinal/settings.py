@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     # These are the pages/apps made for the final project.
     'home',
     'trips',
-    'analytics',
     'reviews',
     'about',
     'contact',

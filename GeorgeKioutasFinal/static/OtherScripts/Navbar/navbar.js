@@ -33,7 +33,6 @@ if (userIsLoggedIn == "True") {
                         </button>
 
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/analytics/">Analytics</a></li>
                             <li><a class="dropdown-item" href="/reviews/">Reviews</a></li>
                             <li><a class="dropdown-item" href="/about/">About</a></li>
                             <li><a class="dropdown-item" href="/contact/">Contact</a></li>
@@ -81,7 +80,6 @@ if (userIsLoggedIn == "True") {
                         </button>
 
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/analytics/">Analytics</a></li>
                             <li><a class="dropdown-item" href="/reviews/">Reviews</a></li>
                             <li><a class="dropdown-item" href="/about/">About</a></li>
                             <li><a class="dropdown-item" href="/contact/">Contact</a></li>

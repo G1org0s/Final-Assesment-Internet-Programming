@@ -29,7 +29,6 @@ urlpatterns = [
     #each app keeps its own page urls here.
     path("", include("home.urls")),
     path("", include("trips.urls")),
-    path("", include("analytics.urls")),
     path("", include("reviews.urls")),
     path("", include("about.urls")),
     path("", include("contact.urls")),
