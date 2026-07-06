@@ -1,0 +1,49 @@
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Tahoma, Arial, sans-serif;
+}
+
+main {
+    flex: 1;
+}
+
+.accounts-section {
+    min-height: 100%;
+    background-color: #e9f8fb;
+}
+
+.account-card {
+    max-width: 760px;
+    margin: 0 auto;
+    background-color: white;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    padding: 24px;
+}
+
+.account-card input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.account-card label {
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.account-card ul {
+    margin-bottom: 16px;
+}
+
+.password-rules {
+    background-color: #f8f9fa;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 18px;
+}

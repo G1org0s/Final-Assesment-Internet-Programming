@@ -116,6 +116,11 @@ def next_trip_id():
     return biggest_id + 1
 
 
+def trip_date(trip):
+    # This gives sort the date from one trip.
+    return trip["trip_date"]
+
+
 # This view opens the trips page and checks the trip form.
 def trips(request):
     sort_order = "earliest"
@@ -187,9 +192,9 @@ def trips(request):
 
     # This is the same sorting idea, but done in Python.
     if sort_order == "latest":
-        shown_trips.sort(key=lambda trip: trip["trip_date"], reverse=True)
+        shown_trips.sort(key=trip_date, reverse=True)
     else:
-        shown_trips.sort(key=lambda trip: trip["trip_date"])
+        shown_trips.sort(key=trip_date)
 
     pending_count = 0
     completed_count = 0

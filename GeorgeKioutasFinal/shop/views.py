@@ -49,6 +49,16 @@ def shop(request):
 
 
 def show_category(request, category_name, template_name):
+    # When a logged-in user opens a category, keep it for the dashboard.
+    if request.user.is_authenticated:
+        recent_categories = request.session.get("recent_categories", [])
+
+        if category_name in recent_categories:
+            recent_categories.remove(category_name)
+
+        recent_categories.insert(0, category_name)
+        request.session["recent_categories"] = recent_categories[:5]
+
     # At first, every item in the clicked category is shown.
     selected_sub_category = "All"
     search_form = ProductSearchForm()

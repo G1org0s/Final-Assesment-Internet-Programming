@@ -181,3 +181,26 @@
     color: white !important;
     border-color: #555555 !important;
 }
+
+/* Dark mode for the account pages */
+.dark-mode .accounts-section {
+    background-color: #181818;
+}
+
+.dark-mode .account-card {
+    background-color: #202020 !important;
+    color: white !important;
+    border-color: #444444 !important;
+}
+
+.dark-mode .account-card input {
+    background-color: #252525 !important;
+    color: white !important;
+    border-color: #555555 !important;
+}
+
+.dark-mode .password-rules {
+    background-color: #252525 !important;
+    color: white !important;
+    border-color: #555555 !important;
+}

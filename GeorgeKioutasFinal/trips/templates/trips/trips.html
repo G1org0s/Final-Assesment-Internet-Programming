@@ -14,7 +14,10 @@
 
     <link rel="stylesheet" href="{% static 'trips/trips.css' %}">
     <link rel="stylesheet" href="{% static 'DarkMode/DarkMode.css' %}">
-    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}?v=3" defer></script>
+    <script>
+        const userIsLoggedIn = "{{ user.is_authenticated }}";
+    </script>
+    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}?v=8" defer></script>
     <script src="{% static 'DarkMode/Darkmode.js' %}" defer></script>
 </head>
 <body>
