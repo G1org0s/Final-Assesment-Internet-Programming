@@ -126,3 +126,12 @@ main {
     border-radius: 8px;
     padding: 24px;
 }
+
+.category-content-panel input,
+.category-content-panel select {
+    width: 100%;
+    padding: 7px;
+    margin-bottom: 12px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+}

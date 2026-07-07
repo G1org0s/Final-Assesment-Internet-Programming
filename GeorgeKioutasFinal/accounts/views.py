@@ -1,6 +1,19 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import Group
 from django.shortcuts import redirect, render
-from .forms import LoginForm, ProfileForm, RegisterForm
+from .forms import ProfileForm, RegisterForm
+
+
+def user_can_manage_products(user):
+    # Salesmen and Managers can see the custom management button.
+    if not user.is_authenticated:
+        return False
+
+    is_salesman = user.groups.filter(name="Salesmen").exists()
+    is_manager = user.groups.filter(name="Managers").exists()
+
+    return is_salesman or is_manager
 
 
 def check_password_rules(password):
@@ -41,7 +54,10 @@ def register(request):
         # Django checks the form before saving the new user.
         if form.is_valid() and password_message == "":
             user = form.save()
+            customer_group = Group.objects.get(name="Customers")
+            user.groups.add(customer_group)
             login(request, user)
+            request.session["can_manage_products"] = False
             return redirect("/profile/")
     else:
         form = RegisterForm()
@@ -57,20 +73,18 @@ def login_user(request):
     message = ""
 
     if request.method == "POST":
-        form = LoginForm(request.POST)
+        form = AuthenticationForm(request, data=request.POST)
 
         if form.is_valid():
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password"]
-            user = authenticate(request, username=username, password=password)
-
-            if user is not None:
-                login(request, user)
-                return redirect("/home/")
-            else:
-                message = "Wrong username or password."
+            # AuthenticationForm already checked the username and password.
+            user = form.get_user()
+            login(request, user)
+            request.session["can_manage_products"] = user_can_manage_products(user)
+            return redirect("/home/")
+        else:
+            message = "Wrong username or password."
     else:
-        form = LoginForm()
+        form = AuthenticationForm()
 
     return render(request, "accounts/login.html", {
         "form": form,
@@ -99,10 +113,6 @@ def profile(request):
 
 # This view lets the logged in user change their profile details.
 def edit_profile(request):
-
-
-
-    
     # Only logged in users can open this page.
     if not request.user.is_authenticated:
         return redirect("/login/")

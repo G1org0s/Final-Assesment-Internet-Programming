@@ -1,5 +1,5 @@
 from django import forms
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import Category, Product, SubCategory
 
 
@@ -34,6 +34,32 @@ class ProductSearchForm(forms.Form):
             ("high", "Highest first"),
         ]
     )
+
+
+class ProductEditForm(forms.ModelForm):
+    # This form is for the custom manager/salesman product edit page.
+    class Meta:
+        model = Product
+        fields = ["name", "brand", "price", "category", "sub_category"]
+
+
+def can_manage_products(user):
+    # Managers and salesmen can use the custom product management page.
+    if not user.is_authenticated:
+        return False
+
+    is_salesman = user.groups.filter(name="Salesmen").exists()
+    is_manager = user.groups.filter(name="Managers").exists()
+
+    return is_salesman or is_manager
+
+
+def is_manager(user):
+    # Managers can see and edit all products.
+    if not user.is_authenticated:
+        return False
+
+    return user.groups.filter(name="Managers").exists()
 
 
 # This small function is used when products are sorted by price.
@@ -171,3 +197,78 @@ def lures(request):
 
 def accessories(request):
     return show_category(request, "Accessories", "shop/accessories.html")
+
+
+def manage_products(request):
+    # Customers and public users are not allowed to open this page.
+    if not can_manage_products(request.user):
+        return redirect("/home/")
+
+    if is_manager(request.user):
+        products = Product.objects.all()
+    else:
+        # Salesmen see only products that belong to them.
+        products = Product.objects.filter(owner=request.user)
+
+    return render(request, "shop/manage_products.html", {
+        "products": products,
+        "is_manager": is_manager(request.user),
+    })
+
+
+def add_product(request):
+    # Only managers can add new products.
+    if not is_manager(request.user):
+        return redirect("/shop/manage/")
+
+    if request.method == "POST":
+        form = ProductEditForm(request.POST)
+
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.owner = request.user
+            product.save()
+            return redirect("/shop/manage/")
+    else:
+        form = ProductEditForm()
+
+    return render(request, "shop/add_product.html", {
+        "form": form,
+    })
+
+
+def edit_product(request, product_id):
+    # Customers and public users are not allowed to edit products.
+    if not can_manage_products(request.user):
+        return redirect("/home/")
+
+    product = Product.objects.get(id=product_id)
+
+    if not is_manager(request.user) and product.owner != request.user:
+        return redirect("/shop/manage/")
+
+    if request.method == "POST":
+        form = ProductEditForm(request.POST, instance=product)
+
+        if form.is_valid():
+            form.save()
+            return redirect("/shop/manage/")
+    else:
+        form = ProductEditForm(instance=product)
+
+    return render(request, "shop/edit_product.html", {
+        "form": form,
+        "product": product,
+    })
+
+
+def delete_product(request, product_id):
+    # Only managers can delete products from the custom page.
+    if not is_manager(request.user):
+        return redirect("/shop/manage/")
+
+    if request.method == "POST":
+        product = Product.objects.get(id=product_id)
+        product.delete()
+
+    return redirect("/shop/manage/")

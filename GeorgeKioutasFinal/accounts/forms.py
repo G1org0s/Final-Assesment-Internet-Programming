@@ -15,12 +15,6 @@ class RegisterForm(UserCreationForm):
         fields = ["username", "email", "first_name", "last_name", "password1", "password2"]
 
 
-# This form is used for the login page.
-class LoginForm(forms.Form):
-    username = forms.CharField(max_length=20)
-    password = forms.CharField(widget=forms.PasswordInput)
-
-
 # This form lets the user update the details given during registration.
 class ProfileForm(forms.Form):
     first_name = forms.CharField(max_length=100)

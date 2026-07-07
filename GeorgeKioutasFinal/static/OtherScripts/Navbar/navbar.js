@@ -1,4 +1,9 @@
 const navbar = document.querySelector("#navbar");
+let manageProductsButton = "";
+
+if (userCanManageProducts == "True") {
+    manageProductsButton = `<a href="/shop/manage/" class="btn btn-light">Manage Products</a>`;
+}
 
 // This navbar is shown when the user is logged in.
 if (userIsLoggedIn == "True") {
@@ -21,6 +26,7 @@ if (userIsLoggedIn == "True") {
                     <a href="/shop/" class="btn btn-light">Shop</a>
                     <a href="/trips/" class="btn btn-light">Trips</a>
                     <a href="/profile/" class="btn btn-light">Profile</a>
+                    ${manageProductsButton}
 
                     <!-- The extra pages are here so navbar dont get too full. -->
                     <div class="dropdown">

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 {% load static %}
 <html lang="en">
 <head>
@@ -16,8 +16,9 @@
     <link rel="stylesheet" href="{% static 'DarkMode/DarkMode.css' %}?v=2">
     <script>
         const userIsLoggedIn = "{{ user.is_authenticated }}";
+        const userCanManageProducts = "{{ request.session.can_manage_products }}";
     </script>
-    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}?v=8" defer></script>
+    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}" defer></script>
     <script src="{% static 'DarkMode/Darkmode.js' %}" defer></script>
 </head>
 <body>
@@ -113,7 +114,7 @@
                                 <h2 class="h5 fw-bold">{{ shop_item.name }}</h2>
                                 <p class="mb-1">Category: {{ shop_item.category.name }}</p>
                                 <p class="mb-1">Brand: {{ shop_item.brand }}</p>
-                                <p class="mb-0">Price: {{ shop_item.price }} euro</p>
+                                <p class="mb-0">Price: {{ shop_item.price }} &euro;</p>
                             </div>
                         </div>
                     {% empty %}

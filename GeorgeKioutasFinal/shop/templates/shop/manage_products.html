@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage shop products">
+    <meta name="author" content="George Kioutas">
+    <title>Fish The.Box / Manage Products</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+
+    <link rel="stylesheet" href="{% static 'shop/shop.css' %}">
+    <link rel="stylesheet" href="{% static 'DarkMode/DarkMode.css' %}">
+    <script>
+        const userIsLoggedIn = "{{ user.is_authenticated }}";
+        const userCanManageProducts = "{{ request.session.can_manage_products }}";
+    </script>
+    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}" defer></script>
+    <script src="{% static 'DarkMode/Darkmode.js' %}" defer></script>
+</head>
+<body>
+    <header class="bg-info text-white sticky-top">
+        <div class="container py-3">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <img src="{% static 'shop/logo.png' %}" alt="Fish The.Box logo" width="150" height="120">
+                <div id="navbar"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="shop-main">
+        <section class="shop-section py-5">
+            <div class="container">
+                <h1 class="text-center fw-bold mb-2">Manage Products</h1>
+
+                {% if is_manager %}
+                    <p class="text-center mb-4">Manager view: all products can be edited.</p>
+                    <div class="text-center mb-4">
+                        <a href="{% url 'shop:add_product' %}" class="btn btn-info">
+                            + Add Product
+                        </a>
+                    </div>
+                {% else %}
+                    <p class="text-center mb-4">Salesman view: only your own products can be edited.</p>
+                {% endif %}
+
+                <div class="category-content-panel">
+                    <div class="row g-3">
+                        {% for product in products %}
+                            <div class="col-md-4">
+                                <div class="product-card h-100">
+                                    <h2 class="h5 fw-bold">{{ product.name }}</h2>
+                                    <p class="mb-1">Category: {{ product.category.name }}</p>
+                                    <p class="mb-1">Subcategory: {{ product.sub_category.name }}</p>
+                                    <p class="mb-1">Brand: {{ product.brand }}</p>
+                                    <p class="mb-3">Price: {{ product.price }} &euro;</p>
+
+                                    <a href="{% url 'shop:edit_product' product.id %}" class="btn btn-info">
+                                        Edit Product
+                                    </a>
+
+                                    {% if is_manager %}
+                                        <!-- Only managers see this delete form. -->
+                                        <form action="{% url 'shop:delete_product' product.id %}" method="post" class="d-inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p class="text-center">No products are available for this account.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-light text-dark py-4">
+        <div class="container d-flex justify-content-between align-items-center flex-wrap gap-4">
+            <img src="{% static 'shop/logo.png' %}" alt="Fish The.Box logo" width="100" height="80">
+            <p class="mb-0">&copy; 2026 Fish The.Box. All rights reserved.</p>
+            <p class="mb-0">Email: <a href="mailto:fishthebox@example.com">fishthebox@example.com</a></p>
+            <div class="d-flex gap-3 fs-3">
+                <a href="https://github.com/G1org0s/Final-Assesment-Internet-Programming.git" aria-label="GitHub">
+                    <i class="bi bi-github"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

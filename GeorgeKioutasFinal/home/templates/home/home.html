@@ -16,8 +16,9 @@
     <link rel="stylesheet" href="{% static 'DarkMode/DarkMode.css' %}">
     <script>
         const userIsLoggedIn = "{{ user.is_authenticated }}";
+        const userCanManageProducts = "{{ request.session.can_manage_products }}";
     </script>
-    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}?v=8" defer></script>
+    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}" defer></script>
     <script src="{% static 'DarkMode/Darkmode.js' %}" defer></script>
     <script src="{% static 'home/home.js' %}" defer></script>
 </head>
