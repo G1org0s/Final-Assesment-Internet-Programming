@@ -4,22 +4,16 @@ import django.db.models.deletion
 
 def move_product_categories(apps, schema_editor):
     Product = apps.get_model("shop", "Product")
-    Category = apps.get_model("shop", "Category")
     SubCategory = apps.get_model("shop", "SubCategory")
 
-    first_category = Category.objects.first()
-
-    # Give each product the category that came from its old sub category.
+    # Give each product the category from its old sub category
     for product in Product.objects.all():
-        if product.sub_category.category:
-            product.category = product.sub_category.category
-        else:
-            product.category = first_category
+        product.category = product.sub_category.category
         product.save()
 
     sub_categories = {}
 
-    # Keep one sub category with each name, for example only one Spinning.
+    # Keep only one sub category with each name
     for sub_category in SubCategory.objects.all().order_by("id"):
         if sub_category.name in sub_categories:
             first_sub_category = sub_categories[sub_category.name]
@@ -45,7 +39,8 @@ class Migration(migrations.Migration):
                 to="shop.category",
             ),
         ),
-        migrations.RunPython(move_product_categories, migrations.RunPython.noop),
+        # RunPython runs the function above while this migration is being applied
+        migrations.RunPython(move_product_categories),
         migrations.RemoveField(
             model_name="subcategory",
             name="category",

@@ -17,6 +17,7 @@ body {
     inset: 0;
     width: 100%;
     height: 100%;
+    /* cover fills the video area and crops only the part that does not fit */
     object-fit: cover;
     z-index: 0;
 }

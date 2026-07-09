@@ -48,7 +48,7 @@
                                 {% csrf_token %}
                                 {{ form.non_field_errors }}
                                 <div class="mb-3">
-                                    <!-- These fields come from ReviewForm in views.py. -->
+                                    <!-- These fields come from ReviewForm in forms.py -->
                                     {{ form.name.label_tag }}
                                     {{ form.name }}
                                     {{ form.name.errors }}

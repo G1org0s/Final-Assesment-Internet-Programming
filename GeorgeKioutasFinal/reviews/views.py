@@ -1,28 +1,5 @@
-from django import forms
 from django.shortcuts import render
-
-
-# This form is for writing a fishing review.
-class ReviewForm(forms.Form):
-    # min_length and max_length are used for simple validation.
-    name = forms.CharField(label="Name", min_length=2, max_length=30)
-    location = forms.CharField(label="Location", min_length=2, max_length=30)
-    fish = forms.CharField(label="Fish Caught", max_length=80)
-    # Textarea makes the message box bigger than a normal input.
-    message = forms.CharField(
-        label="Message",
-        min_length=10,
-        max_length=200,
-        widget=forms.Textarea
-    )
-    # The user can only answer Yes or No here.
-    recommend = forms.ChoiceField(
-        label="Would you recommend this location?",
-        choices=[
-            ("Yes", "Yes"),
-            ("No", "No"),
-        ]
-    )
+from .forms import ReviewForm
 
 
 # Reviews are saved in this list while the server is running.

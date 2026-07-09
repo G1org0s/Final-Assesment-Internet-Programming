@@ -111,10 +111,15 @@
                     {% for shop_item in items %}
                         <div class="col-md-4">
                             <div class="product-card h-100">
-                                <h2 class="h5 fw-bold">{{ shop_item.name }}</h2>
-                                <p class="mb-1">Category: {{ shop_item.category.name }}</p>
-                                <p class="mb-1">Brand: {{ shop_item.brand }}</p>
-                                <p class="mb-0">Price: {{ shop_item.price }} &euro;</p>
+                                {% if shop_item.photo %}
+                                    <img src="{% static shop_item.photo %}" alt="{{ shop_item.name }}" class="product-photo">
+                                {% endif %}
+                                <div class="product-details">
+                                    <h2 class="h5 fw-bold">{{ shop_item.name }}</h2>
+                                    <p>Category: {{ shop_item.category.name }}</p>
+                                    <p>Brand: {{ shop_item.brand }}</p>
+                                    <p>Price: {{ shop_item.price }} &euro;</p>
+                                </div>
                             </div>
                         </div>
                     {% empty %}

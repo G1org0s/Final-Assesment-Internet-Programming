@@ -1,15 +1,20 @@
+// Find the empty navbar area from each html page
 const navbar = document.querySelector("#navbar");
+
+// This stays empty for customers and public users
 let manageProductsButton = "";
 
+// Add the management link only for managers and salesmen
 if (userCanManageProducts == "True") {
     manageProductsButton = `<a href="/shop/manage/" class="btn btn-light">Manage Products</a>`;
 }
 
-// This navbar is shown when the user is logged in.
+// This navbar is shown when the user is logged in
 if (userIsLoggedIn == "True") {
+    // innerHTML places the shared navbar inside the empty navbar area
     navbar.innerHTML = `
         <nav class="navbar navbar-expand-lg navbar-dark p-0">
-            <!-- This button opens the full menu when screen is small. -->
+            <!-- This button opens the full menu when screen is small -->
             <button class="navbar-toggler"
                     type="button"
                     data-bs-toggle="collapse"
@@ -28,7 +33,7 @@ if (userIsLoggedIn == "True") {
                     <a href="/profile/" class="btn btn-light">Profile</a>
                     ${manageProductsButton}
 
-                    <!-- The extra pages are here so navbar dont get too full. -->
+                    <!-- The extra pages are here so navbar dont get too full -->
                     <div class="dropdown">
                         <button class="navbar-toggler d-block"
                                 type="button"
@@ -55,10 +60,11 @@ if (userIsLoggedIn == "True") {
         </nav>
     `;
 } else {
-    // This navbar is shown when the user is not logged in.
+    // This navbar is shown when the user is not logged in
+    // It shows Register and Login instead of Profile and Logout
     navbar.innerHTML = `
         <nav class="navbar navbar-expand-lg navbar-dark p-0">
-            <!-- This button opens the full menu when screen is small. -->
+            <!-- This button opens the full menu when screen is small -->
             <button class="navbar-toggler"
                     type="button"
                     data-bs-toggle="collapse"
@@ -75,7 +81,7 @@ if (userIsLoggedIn == "True") {
                     <a href="/shop/" class="btn btn-light">Shop</a>
                     <a href="/trips/" class="btn btn-light">Trips</a>
 
-                    <!-- The extra pages are here so navbar dont get too full. -->
+                    <!-- The extra pages are here so navbar dont get too full -->
                     <div class="dropdown">
                         <button class="navbar-toggler d-block"
                                 type="button"

@@ -52,25 +52,30 @@
                         {% for product in products %}
                             <div class="col-md-4">
                                 <div class="product-card h-100">
-                                    <h2 class="h5 fw-bold">{{ product.name }}</h2>
-                                    <p class="mb-1">Category: {{ product.category.name }}</p>
-                                    <p class="mb-1">Subcategory: {{ product.sub_category.name }}</p>
-                                    <p class="mb-1">Brand: {{ product.brand }}</p>
-                                    <p class="mb-3">Price: {{ product.price }} &euro;</p>
-
-                                    <a href="{% url 'shop:edit_product' product.id %}" class="btn btn-info">
-                                        Edit Product
-                                    </a>
-
-                                    {% if is_manager %}
-                                        <!-- Only managers see this delete form. -->
-                                        <form action="{% url 'shop:delete_product' product.id %}" method="post" class="d-inline">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-danger">
-                                                Delete
-                                            </button>
-                                        </form>
+                                    {% if product.photo %}
+                                        <img src="{% static product.photo %}" alt="{{ product.name }}" class="product-photo">
                                     {% endif %}
+                                    <div class="product-details">
+                                        <h2 class="h5 fw-bold">{{ product.name }}</h2>
+                                        <p>Category: {{ product.category.name }}</p>
+                                        <p>Subcategory: {{ product.sub_category.name }}</p>
+                                        <p>Brand: {{ product.brand }}</p>
+                                        <p>Price: {{ product.price }} &euro;</p>
+
+                                        <a href="{% url 'shop:edit_product' product.id %}" class="btn btn-info">
+                                            Edit Product
+                                        </a>
+
+                                        {% if is_manager %}
+                                            <!-- Only managers see this delete form. -->
+                                            <form action="{% url 'shop:delete_product' product.id %}" method="post" class="d-inline">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         {% empty %}

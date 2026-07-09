@@ -54,16 +54,14 @@
 
                     <h3 class="h5 fw-bold mt-4">Recent Activity</h3>
 
-                    {% if recent_categories %}
+                    {% if last_category %}
                         <ul>
-                            <!-- These are shop categories the logged in user opened recently. -->
-                            {% for category_name in recent_categories %}
-                                <li>
-                                    Viewed
-                                    <a href="/shop/{{ category_name }}/">{{ category_name }}</a>
-                                    products
-                                </li>
-                            {% endfor %}
+                            <!-- This is the last shop category opened by the user -->
+                            <li>
+                                Viewed
+                                <a href="/shop/{{ last_category }}/">{{ last_category }}</a>
+                                products
+                            </li>
                         </ul>
                     {% else %}
                         <p>No recent activity yet.</p>

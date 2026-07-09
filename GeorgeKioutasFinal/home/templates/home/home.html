@@ -104,6 +104,57 @@
             </div>
         </article>
 
+        <article class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center mb-4 fw-bold">Recommended Products</h2>
+
+                {% if recommended_products %}
+                    <p class="text-center mb-4">
+                        Because you viewed {{ recommendation_category }}, you may also like:
+                    </p>
+
+                    <div id="recommendedCarousel" class="carousel slide mx-auto" data-bs-ride="carousel" style="max-width: 420px;">
+                        <div class="carousel-inner">
+                        {% for product in recommended_products %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <div class="card shadow-sm mx-auto" style="width: 320px; max-width: 100%; overflow: hidden;">
+                                    <div class="card-body">
+                                        {% if product.photo %}
+                                            <!-- contain keeps the whole photo inside the fixed width and height -->
+                                            <img src="{% static product.photo %}"
+                                                 alt="{{ product.name }}"
+                                                 width="140"
+                                                 height="120"
+                                                 style="display: block; object-fit: contain; margin: 0 auto 12px auto;">
+                                        {% endif %}
+                                        <h3 class="card-title h5 fw-bold">{{ product.name }}</h3>
+                                        <p class="card-text mb-1">Category: {{ product.category.name }}</p>
+                                        <p class="card-text mb-1">Brand: {{ product.brand }}</p>
+                                        <p class="card-text mb-0">Price: {{ product.price }} &euro;</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+
+                        <button class="carousel-control-prev" type="button" data-bs-target="#recommendedCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon bg-info rounded-circle" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+
+                        <button class="carousel-control-next" type="button" data-bs-target="#recommendedCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon bg-info rounded-circle" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                {% else %}
+                    <p class="text-center mb-0">
+                        Visit the shop categories to get product recommendations.
+                    </p>
+                {% endif %}
+            </div>
+        </article>
+
         <article class="py-5 bg-secondary text-white">
             <div class="container">
                 <h2 class="mb-4">Latest Activity</h2>

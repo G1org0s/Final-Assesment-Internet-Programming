@@ -38,8 +38,9 @@
                 <p class="text-center mb-4">{{ product.name }}</p>
 
                 <div class="category-content-panel">
-                    <!-- This form saves changes for one product. -->
-                    <form action="{% url 'shop:edit_product' product.id %}" method="post">
+                    <!-- This form saves changes for one product -->
+                    <!-- enctype lets the form send the uploaded product photo -->
+                    <form action="{% url 'shop:edit_product' product.id %}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form }}
 

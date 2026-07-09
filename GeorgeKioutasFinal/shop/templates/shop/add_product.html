@@ -37,8 +37,9 @@
                 <h1 class="text-center fw-bold mb-4">Add Product</h1>
 
                 <div class="category-content-panel">
-                    <!-- This form adds one product to the database. -->
-                    <form action="{% url 'shop:add_product' %}" method="post">
+                    <!-- This form adds one product to the database -->
+                    <!-- enctype lets the form send the uploaded product photo -->
+                    <form action="{% url 'shop:add_product' %}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form }}
 

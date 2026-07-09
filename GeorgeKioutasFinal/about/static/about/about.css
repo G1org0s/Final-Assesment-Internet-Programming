@@ -9,17 +9,20 @@ body {
 .about-section img {
     width: 100%;
     height: 360px;
+    /* cover fills the image area and keeps empty space from showing */
     object-fit: cover;
 }
 
 .team-image {
     width: 100%;
     height: 300px;
+    /* cover keeps all team images at the same visible size */
     object-fit: cover;
 }
 
 .carousel-image {
     height: 500px;
+    /* cover makes every carousel image fill the same image area */
     object-fit: cover;
     object-position: center;
 }
