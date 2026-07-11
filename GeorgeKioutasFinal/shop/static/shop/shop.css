@@ -156,6 +156,16 @@ main {
     background-color: white;
 }
 
+.edit-product-photo {
+    width: 180px;
+    height: 140px;
+    /* contain keeps the saved photo inside the edit page preview box */
+    object-fit: contain;
+    border: 1px solid #dddddd;
+    border-radius: 6px;
+    background-color: white;
+}
+
 .category-content-panel input,
 .category-content-panel select {
     width: 100%;

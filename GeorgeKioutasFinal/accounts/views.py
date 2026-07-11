@@ -1,8 +1,7 @@
 from django.contrib.auth import login, logout
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from django.shortcuts import redirect, render
-from .forms import ProfileForm, RegisterForm
+from .forms import LoginForm, ProfileForm, RegisterForm
 
 
 def user_can_manage_products(user):
@@ -51,18 +50,36 @@ def check_password_rules(password):
 def register(request):
     # This stays empty when the password follows all the rules
     password_message = ""
+    username_message = ""
 
     # POST means that the user pressed the Register button
     if request.method == "POST":
         # Put the submitted information inside the Django form
         form = RegisterForm(request.POST)
         password = request.POST["password1"]
+        password_confirmation = request.POST["password2"]
         password_message = check_password_rules(password)
 
-        # Django checks the form before saving the new user
-        if form.is_valid() and password_message == "":
-            # form.save adds the new user to the database
-            user = form.save()
+        if password != password_confirmation:
+            password_message = "The two passwords must match."
+
+        # Check if this username is already used by another account
+        if User.objects.filter(username=request.POST["username"]).exists():
+            username_message = "This username already exists."
+
+        # Django checks the form before creating the new user
+        if form.is_valid() and password_message == "" and username_message == "":
+            # Create the new user from the checked form information
+            user = User.objects.create_user(
+                username=form.cleaned_data["username"],
+                email=form.cleaned_data["email"],
+                password=form.cleaned_data["password1"],
+            )
+
+            # Save the extra profile details
+            user.first_name = form.cleaned_data["first_name"]
+            user.last_name = form.cleaned_data["last_name"]
+            user.save()
 
             # Every new account is placed in the Customers group
             customer_group = Group.objects.get(name="Customers")
@@ -80,6 +97,7 @@ def register(request):
     return render(request, "accounts/register.html", {
         "form": form,
         "password_message": password_message,
+        "username_message": username_message,
     })
 
 
@@ -89,11 +107,11 @@ def login_user(request):
     message = ""
 
     if request.method == "POST":
-        # AuthenticationForm is Django's ready login form
-        form = AuthenticationForm(request, data=request.POST)
+        # LoginForm is based on Django's ready login form
+        form = LoginForm(request, data=request.POST)
 
         if form.is_valid():
-            # AuthenticationForm already checked the username and password
+            # LoginForm already checked the username and password
             user = form.get_user()
             login(request, user)
 
@@ -104,7 +122,7 @@ def login_user(request):
             message = "Wrong username or password."
     else:
         # Make an empty login form for a normal page visit
-        form = AuthenticationForm()
+        form = LoginForm()
 
     return render(request, "accounts/login.html", {
         "form": form,

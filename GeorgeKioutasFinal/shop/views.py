@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from .forms import ProductEditForm, ProductSearchForm, SubCategoryForm
+from .forms import CategoryAddForm, ProductEditForm, ProductSearchForm, SubCategoryAddForm, SubCategoryForm
 from .models import Category, Product, SubCategory
 
 
@@ -47,6 +47,28 @@ def save_product_photo(product, photo_file):
     # Keep only the photo path inside the database product
     product.photo = "shop/products/" + file_name
     product.save()
+
+
+def save_category_photo(category, photo_file):
+    # Uploaded category photos are saved in the shop static folder
+    if not photo_file:
+        return
+
+    # Use the category id so every category gets its own photo name
+    file_name = "category_" + str(category.id) + ".png"
+
+    # This is the folder where the category photo will be saved
+    file_path = "shop/static/shop/" + file_name
+
+    # open creates the new image file at the selected folder path
+    # wb means that the file is opened for writing image data
+    with open(file_path, "wb") as new_file:
+        # read gets the uploaded photo and write saves it in the new file
+        new_file.write(photo_file.read())
+
+    # Keep only the photo path inside the database category
+    category.photo = "shop/" + file_name
+    category.save()
 
 
 # This small function is used when products are sorted by price
@@ -105,6 +127,17 @@ def show_category(request, category_name, template_name):
             price_order = search_form.cleaned_data["price_order"]
 
     sub_categories = ["All"]
+
+    # These are sub categories that the manager added for this category
+    for sub_category in SubCategory.objects.all():
+        category_matches = (
+            sub_category.category is not None and
+            sub_category.category.name == category_name
+        )
+
+        # Add each category sub category once
+        if category_matches and sub_category.name not in sub_categories:
+            sub_categories.append(sub_category.name)
 
     # These are the sub categories used by products in this category
     for shop_item in Product.objects.all():
@@ -196,6 +229,12 @@ def accessories(request):
     return show_category(request, "Accessories", "shop/accessories.html")
 
 
+def category_page(request):
+    # This opens any new category that a manager adds later
+    category_name = request.GET["category"]
+    return show_category(request, category_name, "shop/category.html")
+
+
 def manage_products(request):
     # Customers and public users are not allowed to open this page
     if not can_manage_products(request.user):
@@ -210,6 +249,8 @@ def manage_products(request):
 
     return render(request, "shop/manage_products.html", {
         "products": products,
+        "categories": Category.objects.all(),
+        "sub_categories": SubCategory.objects.all(),
         "is_manager": is_manager(request.user),
     })
 
@@ -221,20 +262,24 @@ def add_product(request):
 
     if request.method == "POST":
         # Put the submitted values inside the product form
-        form = ProductEditForm(request.POST)
+        form = ProductEditForm(request.POST, request.FILES)
 
         if form.is_valid():
-            # Wait before saving because the owner must be added first
-            product = form.save(commit=False)
+            # Create one new product from the checked form values
+            product = Product(
+                name=form.cleaned_data["name"],
+                brand=form.cleaned_data["brand"],
+                price=form.cleaned_data["price"],
+                category=form.cleaned_data["category"],
+                sub_category=form.cleaned_data["sub_category"],
+                owner=request.user,
+            )
 
-            # The logged in manager becomes the product owner
-            product.owner = request.user
-
-            # This command adds the complete product to the database
+            # This command adds the new product to the database
             product.save()
 
             # Save the optional uploaded image after the product has an id
-            save_product_photo(product, request.FILES.get("photo_file"))
+            save_product_photo(product, form.cleaned_data["photo_file"])
             return redirect("/shop/manage/")
     else:
         # Show an empty product form when the page first opens
@@ -245,10 +290,75 @@ def add_product(request):
     })
 
 
-def edit_product(request, product_id):
+def add_category(request):
+    # Only managers can add new main categories
+    if not is_manager(request.user):
+        return redirect("/shop/manage/")
+
+    if request.method == "POST":
+        # Put the submitted category values inside the form
+        form = CategoryAddForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            # Create the new category from the checked form values
+            category = Category(
+                name=form.cleaned_data["name"],
+                photo="",
+            )
+
+            # Save the new category in the database
+            category.save()
+
+            # Save the uploaded photo after the category has an id
+            save_category_photo(category, form.cleaned_data["photo_file"])
+            return redirect("/shop/manage/")
+    else:
+        # Show an empty category form when the page opens
+        form = CategoryAddForm()
+
+    return render(request, "shop/add_category.html", {
+        "form": form,
+    })
+
+
+def add_sub_category(request):
+    # Only managers can add new sub categories
+    if not is_manager(request.user):
+        return redirect("/shop/manage/")
+
+    if request.method == "POST":
+        # Put the submitted sub category values inside the form
+        form = SubCategoryAddForm(request.POST)
+
+        if form.is_valid():
+            # Create the new sub category from the checked form value
+            sub_category = SubCategory(
+                name=form.cleaned_data["name"],
+                category=form.cleaned_data["category"],
+            )
+
+            # Save the new sub category in the database
+            sub_category.save()
+            return redirect("/shop/manage/")
+    else:
+        # Show an empty sub category form when the page opens
+        form = SubCategoryAddForm()
+
+    return render(request, "shop/add_sub_category.html", {
+        "form": form,
+    })
+
+
+def edit_product(request):
     # Customers and public users are not allowed to edit products
     if not can_manage_products(request.user):
         return redirect("/home/")
+
+    # The product number comes from the link or submitted form
+    if request.method == "POST":
+        product_id = request.POST["product_id"]
+    else:
+        product_id = request.GET["product_id"]
 
     # Find the selected product from its number in the url
     product = Product.objects.get(id=product_id)
@@ -258,17 +368,30 @@ def edit_product(request, product_id):
         return redirect("/shop/manage/")
 
     if request.method == "POST":
-        # instance means this form updates the existing product
-        form = ProductEditForm(request.POST, instance=product)
+        # Put the edited values inside the product form
+        form = ProductEditForm(request.POST, request.FILES)
 
         if form.is_valid():
+            # Copy the checked form values back to the selected product
+            product.name = form.cleaned_data["name"]
+            product.brand = form.cleaned_data["brand"]
+            product.price = form.cleaned_data["price"]
+            product.category = form.cleaned_data["category"]
+            product.sub_category = form.cleaned_data["sub_category"]
+
             # Save the edited product values in the database
-            product = form.save()
-            save_product_photo(product, request.FILES.get("photo_file"))
+            product.save()
+            save_product_photo(product, form.cleaned_data["photo_file"])
             return redirect("/shop/manage/")
     else:
         # Fill the form with the product's current values
-        form = ProductEditForm(instance=product)
+        form = ProductEditForm(initial={
+            "name": product.name,
+            "brand": product.brand,
+            "price": product.price,
+            "category": product.category,
+            "sub_category": product.sub_category,
+        })
 
     return render(request, "shop/edit_product.html", {
         "form": form,
@@ -276,14 +399,43 @@ def edit_product(request, product_id):
     })
 
 
-def delete_product(request, product_id):
+def delete_product(request):
     # Only managers can delete products from the custom page
     if not is_manager(request.user):
         return redirect("/shop/manage/")
 
     if request.method == "POST":
         # Find the selected database product and remove it
+        product_id = request.POST["product_id"]
         product = Product.objects.get(id=product_id)
         product.delete()
+
+    return redirect("/shop/manage/")
+
+
+def delete_category(request):
+    # Only managers can delete categories from the custom page
+    if not is_manager(request.user):
+        return redirect("/shop/manage/")
+
+    if request.method == "POST":
+        # Find the selected category and remove it
+        category_id = request.POST["category_id"]
+        category = Category.objects.get(id=category_id)
+        category.delete()
+
+    return redirect("/shop/manage/")
+
+
+def delete_sub_category(request):
+    # Only managers can delete sub categories from the custom page
+    if not is_manager(request.user):
+        return redirect("/shop/manage/")
+
+    if request.method == "POST":
+        # Find the selected sub category and remove it
+        sub_category_id = request.POST["sub_category_id"]
+        sub_category = SubCategory.objects.get(id=sub_category_id)
+        sub_category.delete()
 
     return redirect("/shop/manage/")

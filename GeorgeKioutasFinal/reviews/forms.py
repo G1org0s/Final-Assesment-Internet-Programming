@@ -4,7 +4,6 @@ from django import forms
 # This form is for writing a fishing review
 class ReviewForm(forms.Form):
     # min_length and max_length are used for simple validation
-    name = forms.CharField(label="Name", min_length=2, max_length=30)
     location = forms.CharField(label="Location", min_length=2, max_length=30)
     fish = forms.CharField(label="Fish Caught", max_length=80)
 

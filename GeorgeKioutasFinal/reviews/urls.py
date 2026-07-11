@@ -7,4 +7,5 @@ app_name = "reviews"
 # This url sends the reviews link to the reviews view.
 urlpatterns = [
     path('reviews/', views.reviews, name='reviews'),
+    path('rate-review/', views.rate_review, name='rate_review'),
 ]

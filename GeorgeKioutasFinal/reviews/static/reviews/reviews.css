@@ -37,3 +37,10 @@ textarea {
     border: 1px solid #cccccc;
     border-radius: 6px;
 }
+
+/* Star links are still links, but they look like rating stars */
+.starbutton {
+    color: #ffc107;
+    font-size: 22px;
+    text-decoration: none;
+}

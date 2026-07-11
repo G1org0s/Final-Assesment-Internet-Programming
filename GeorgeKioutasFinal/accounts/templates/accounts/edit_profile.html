@@ -18,7 +18,7 @@
         const userIsLoggedIn = "{{ user.is_authenticated }}";
         const userCanManageProducts = "{{ request.session.can_manage_products }}";
     </script>
-    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}" defer></script>
+    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}?v=2" defer></script>
     <script src="{% static 'DarkMode/Darkmode.js' %}" defer></script>
 </head>
 <body>
@@ -64,3 +64,8 @@
     </footer>
 </body>
 </html>
+
+
+
+
+

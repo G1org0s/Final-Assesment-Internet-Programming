@@ -1,25 +1,27 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
 
 
 # This form creates a new user and also asks for simple profile details
-class RegisterForm(UserCreationForm):
-    # These fields are added to Django's ready registration form
-    username = forms.CharField(max_length=20)
-    email = forms.EmailField(required=True)
-    first_name = forms.CharField(max_length=100)
-    last_name = forms.CharField(max_length=100)
+class RegisterForm(forms.Form):
+    # These are the details that the new user writes
+    username = forms.CharField(max_length=30)
+    email = forms.EmailField(max_length=50, required=True)
+    first_name = forms.CharField(max_length=50)
+    last_name = forms.CharField(max_length=50)
+    password1 = forms.CharField(label="Password", max_length=50, widget=forms.PasswordInput)
+    password2 = forms.CharField(label="Password confirmation", max_length=50, widget=forms.PasswordInput)
 
-    # Meta tells the form which database table and fields it uses
-    class Meta:
-        model = User
-        fields = ["username", "email", "first_name", "last_name", "password1", "password2"]
+
+# This is Django's login form, but the username is limited to 30 characters
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(max_length=30)
+    password = forms.CharField(max_length=50, widget=forms.PasswordInput)
 
 
 # This form lets the user update the details given during registration
 class ProfileForm(forms.Form):
     # These are the details that a logged in user can change
-    first_name = forms.CharField(max_length=100)
-    last_name = forms.CharField(max_length=100)
-    email = forms.EmailField()
+    first_name = forms.CharField(max_length=50)
+    last_name = forms.CharField(max_length=50)
+    email = forms.EmailField(max_length=50)

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product
+from .models import Category, SubCategory
 
 
 # This form is used for filtering inside a category page
@@ -36,13 +36,31 @@ class ProductSearchForm(forms.Form):
 
 
 # This form is for the custom manager and salesman product pages
-# ModelForm connects this form directly with the Product database model
-class ProductEditForm(forms.ModelForm):
+class ProductEditForm(forms.Form):
+    # These fields are written by the manager or salesman
+    name = forms.CharField(max_length=200)
+    brand = forms.CharField(max_length=100)
+    price = forms.IntegerField(min_value=0)
+    category = forms.ModelChoiceField(queryset=Category.objects.all())
+    sub_category = forms.ModelChoiceField(queryset=SubCategory.objects.all())
+
     # FileField creates the box that lets the manager choose a photo from their computer
     # required=False means that adding a photo is optional
     photo_file = forms.FileField(label="Product Photo", required=False)
 
-    # Meta tells the form which model and fields it uses
-    class Meta:
-        model = Product
-        fields = ["name", "brand", "price", "category", "sub_category"]
+
+# This form lets a manager add a new main category
+class CategoryAddForm(forms.Form):
+    name = forms.CharField(max_length=100)
+
+    # FileField creates the box that lets the manager choose a category photo
+    photo_file = forms.FileField(label="Category Photo")
+
+
+# This form lets a manager add a new sub category
+class SubCategoryAddForm(forms.Form):
+    # Sub categories are reused by products, like Spinning or Casting
+    name = forms.CharField(max_length=100)
+
+    # The manager chooses which main category this sub category belongs to
+    category = forms.ModelChoiceField(queryset=Category.objects.all())

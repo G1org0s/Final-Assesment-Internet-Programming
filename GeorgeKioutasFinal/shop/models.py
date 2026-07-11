@@ -13,10 +13,13 @@ class Category(models.Model):
         return self.name
 
 
-# This table keeps the smaller categories that belong to one main category
+# This table keeps the subcategories that belong to one main category
 class SubCategory(models.Model):
-    # A sub category only needs its reusable name
+    # A sub category has a name, like Spinning or Casting
     name = models.CharField(max_length=100)
+
+    # This connects the sub category with one main category
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
 
     # __str__ returns the readable sub category name shown in Django Admin
     def __str__(self):

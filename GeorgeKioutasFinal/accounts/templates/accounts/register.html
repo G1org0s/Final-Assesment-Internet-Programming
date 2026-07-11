@@ -18,7 +18,7 @@
         const userIsLoggedIn = "{{ user.is_authenticated }}";
         const userCanManageProducts = "{{ request.session.can_manage_products }}";
     </script>
-    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}" defer></script>
+    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}?v=2" defer></script>
     <script src="{% static 'DarkMode/Darkmode.js' %}" defer></script>
 </head>
 <body>
@@ -43,6 +43,10 @@
 
                         {% if password_message %}
                             <p class="text-danger fw-bold">{{ password_message }}</p>
+                        {% endif %}
+
+                        {% if username_message %}
+                            <p class="text-danger fw-bold">{{ username_message }}</p>
                         {% endif %}
 
                         {{ form.username.label_tag }}
@@ -105,3 +109,8 @@
     </footer>
 </body>
 </html>
+
+
+
+
+

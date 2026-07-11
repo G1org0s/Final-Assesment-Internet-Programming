@@ -18,7 +18,7 @@
         const userIsLoggedIn = "{{ user.is_authenticated }}";
         const userCanManageProducts = "{{ request.session.can_manage_products }}";
     </script>
-    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}" defer></script>
+    <script src="{% static 'OtherScripts/Navbar/navbar.js' %}?v=2" defer></script>
     <script src="{% static 'DarkMode/Darkmode.js' %}" defer></script>
 </head>
 <body>
@@ -41,7 +41,7 @@
                     <!-- These links open a different page for each main category. -->
                     {% for category in categories %}
                         <div class="col-md-2">
-                            <a href="/shop/{{ category.name }}" class="category-card">
+                            <a href="{% url 'shop:category_page' %}?category={{ category.name }}" class="category-card">
                                 <img src="{% static category.photo %}" alt="{{ category.name }}">
                                 <span>{{ category.name }}</span>
                             </a>
@@ -66,3 +66,6 @@
     </footer>
 </body>
 </html>
+
+
+

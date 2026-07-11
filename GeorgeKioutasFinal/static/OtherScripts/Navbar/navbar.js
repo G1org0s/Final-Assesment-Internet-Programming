@@ -4,6 +4,9 @@ const navbar = document.querySelector("#navbar");
 // This stays empty for customers and public users
 let manageProductsButton = "";
 
+// The profile button is shown for every visitor
+let profileButton = `<a href="/profile/" class="btn btn-light">Profile</a>`;
+
 // Add the management link only for managers and salesmen
 if (userCanManageProducts == "True") {
     manageProductsButton = `<a href="/shop/manage/" class="btn btn-light">Manage Products</a>`;
@@ -14,7 +17,7 @@ if (userIsLoggedIn == "True") {
     // innerHTML places the shared navbar inside the empty navbar area
     navbar.innerHTML = `
         <nav class="navbar navbar-expand-lg navbar-dark p-0">
-            <!-- This button opens the full menu when screen is small -->
+            <!-- This button appears only when the browser gets small -->
             <button class="navbar-toggler"
                     type="button"
                     data-bs-toggle="collapse"
@@ -30,30 +33,17 @@ if (userIsLoggedIn == "True") {
                     <a href="/home/" class="btn btn-light">Home</a>
                     <a href="/shop/" class="btn btn-light">Shop</a>
                     <a href="/trips/" class="btn btn-light">Trips</a>
-                    <a href="/profile/" class="btn btn-light">Profile</a>
                     ${manageProductsButton}
 
-                    <!-- The extra pages are here so navbar dont get too full -->
-                    <div class="dropdown">
-                        <button class="navbar-toggler d-block"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                                aria-label="Open more pages menu">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/reviews/">Reviews</a></li>
-                            <li><a class="dropdown-item" href="/about/">About</a></li>
-                            <li><a class="dropdown-item" href="/contact/">Contact</a></li>
-                        </ul>
-                    </div>
+                    <a href="/reviews/" class="btn btn-light">Reviews</a>
+                    <a href="/about/" class="btn btn-light">About</a>
+                    <a href="/contact/" class="btn btn-light">Contact</a>
 
                     <button id="darkModeToggle" class="btn btn-dark" type="button">
                         Dark Mode
                     </button>
 
+                    ${profileButton}
                     <a href="/logout/" class="btn btn-light">Logout</a>
                 </div>
             </div>
@@ -61,10 +51,10 @@ if (userIsLoggedIn == "True") {
     `;
 } else {
     // This navbar is shown when the user is not logged in
-    // It shows Register and Login instead of Profile and Logout
+    // It shows Register and Login instead of Logout
     navbar.innerHTML = `
         <nav class="navbar navbar-expand-lg navbar-dark p-0">
-            <!-- This button opens the full menu when screen is small -->
+            <!-- This button appears only when the browser gets small -->
             <button class="navbar-toggler"
                     type="button"
                     data-bs-toggle="collapse"
@@ -81,27 +71,15 @@ if (userIsLoggedIn == "True") {
                     <a href="/shop/" class="btn btn-light">Shop</a>
                     <a href="/trips/" class="btn btn-light">Trips</a>
 
-                    <!-- The extra pages are here so navbar dont get too full -->
-                    <div class="dropdown">
-                        <button class="navbar-toggler d-block"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                                aria-label="Open more pages menu">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/reviews/">Reviews</a></li>
-                            <li><a class="dropdown-item" href="/about/">About</a></li>
-                            <li><a class="dropdown-item" href="/contact/">Contact</a></li>
-                        </ul>
-                    </div>
+                    <a href="/reviews/" class="btn btn-light">Reviews</a>
+                    <a href="/about/" class="btn btn-light">About</a>
+                    <a href="/contact/" class="btn btn-light">Contact</a>
 
                     <button id="darkModeToggle" class="btn btn-dark" type="button">
                         Dark Mode
                     </button>
 
+                    ${profileButton}
                     <a href="/register/" class="btn btn-light">Register</a>
                     <a href="/login/" class="btn btn-light">Login</a>
                 </div>
