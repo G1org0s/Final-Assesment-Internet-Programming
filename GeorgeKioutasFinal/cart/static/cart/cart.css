@@ -1,0 +1,69 @@
+body {
+    /* Keep the footer at the bottom of the page */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Tahoma, Arial, sans-serif;
+}
+
+main {
+    /* Main takes the free space between navbar and footer */
+    flex: 1;
+}
+
+.cart-section {
+    /* Light blue background for the cart area */
+    background-color: #e9f8fb;
+}
+
+.cart-panel {
+    /* White box around the cart and checkout content */
+    background-color: white;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    padding: 24px;
+}
+
+input,
+select,
+textarea {
+    /* Same simple style for all checkout form boxes */
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    margin-bottom: 12px;
+}
+
+input[type="radio"] {
+    /* Radio buttons should not become full width like text boxes */
+    width: auto;
+    margin-right: 8px;
+}
+
+#id_payment_method div {
+    /* Add space between Cash and Card */
+    margin-bottom: 8px;
+}
+
+#id_payment_method label {
+    /* Keep each radio button beside its text */
+    display: flex;
+    align-items: center;
+}
+
+.checkout-product {
+    /* Put product photo and product text on the same line */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.checkout-product-photo {
+    /* Keep product photos small inside checkout */
+    max-width: 70px;
+    max-height: 70px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+}

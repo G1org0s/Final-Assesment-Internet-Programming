@@ -4,18 +4,8 @@ from .models import Category, SubCategory
 
 # This form is used for filtering inside a category page
 class SubCategoryForm(forms.Form):
-    sub_category = forms.ChoiceField(
-        label="Sub Category",
-        choices=[
-            ("All", "All"),
-            ("Spinning", "Spinning"),
-            ("Casting", "Casting"),
-            ("Surfcasting", "Surfcasting"),
-            ("Jigging", "Jigging"),
-            ("Boat Fishing", "Boat Fishing"),
-            ("General", "General"),
-        ]
-    )
+    # CharField lets the page use new sub categories added by the manager
+    sub_category = forms.CharField(label="Sub Category", max_length=100)
 
 
 # This form searches products by name, brand, price, and price order

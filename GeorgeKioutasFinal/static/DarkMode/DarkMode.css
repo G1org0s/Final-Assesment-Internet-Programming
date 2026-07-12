@@ -197,3 +197,58 @@
     color: white !important;
     border-color: #555555 !important;
 }
+
+/* Dark mode for the cart pages */
+body.dark-mode .cart-main,
+.dark-mode .cart-main {
+    /* Make the full cart page dark */
+    background-color: #181818 !important;
+}
+
+body.dark-mode .cart-section,
+.dark-mode .cart-section {
+    /* Make the cart section dark too */
+    background-color: #181818 !important;
+}
+
+body.dark-mode .cart-section h1,
+.dark-mode .cart-section h1 {
+    /* Keep the main cart title visible in dark mode */
+    color: white !important;
+}
+
+body.dark-mode .cart-panel,
+.dark-mode .cart-panel {
+    /* Keep the inside cart box white so the form is easy to read */
+    background-color: white !important;
+    color: #111111 !important;
+    border-color: #cccccc !important;
+}
+
+body.dark-mode .cart-panel h1,
+body.dark-mode .cart-panel h2,
+body.dark-mode .cart-panel p,
+body.dark-mode .cart-panel label,
+body.dark-mode .cart-panel strong,
+body.dark-mode .cart-panel li,
+.dark-mode .cart-panel h1,
+.dark-mode .cart-panel h2,
+.dark-mode .cart-panel p,
+.dark-mode .cart-panel label,
+.dark-mode .cart-panel strong,
+.dark-mode .cart-panel li {
+    /* Make normal cart text black inside the white box */
+    color: #111111 !important;
+}
+
+body.dark-mode .cart-panel input,
+body.dark-mode .cart-panel select,
+body.dark-mode .cart-panel textarea,
+.dark-mode .cart-panel input,
+.dark-mode .cart-panel select,
+.dark-mode .cart-panel textarea {
+    /* Keep checkout input text visible inside the white box */
+    background-color: white !important;
+    color: #111111 !important;
+    border-color: #cccccc !important;
+}

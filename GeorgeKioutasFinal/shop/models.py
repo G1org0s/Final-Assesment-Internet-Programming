@@ -36,8 +36,10 @@ class Product(models.Model):
     # The database keeps the photo path, not the actual image file
     photo = models.CharField(max_length=200, blank=True)
 
-    # These foreign keys connect the product with the other tables
+    # This foreign key connects the product with one main category
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    # This foreign key connects the product with one sub category
     sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
 
     # Owner decides which salesman is allowed to edit the product

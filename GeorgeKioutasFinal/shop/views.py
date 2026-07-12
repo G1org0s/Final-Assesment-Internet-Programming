@@ -1,6 +1,20 @@
 from django.shortcuts import redirect, render
+from django.contrib.auth.models import User
 from .forms import CategoryAddForm, ProductEditForm, ProductSearchForm, SubCategoryAddForm, SubCategoryForm
 from .models import Category, Product, SubCategory
+
+
+def get_owner_from_category(category):
+    # Rods, reels and lines belong to Salesman01
+    if category.name == "Rods" or category.name == "Reels" or category.name == "Lines":
+        return User.objects.get(username="Salesman01")
+
+    # Lures and accessories belong to Salesman02
+    if category.name == "Lures" or category.name == "Accessories":
+        return User.objects.get(username="Salesman02")
+
+    # New future categories can stay without owner until manager decides
+    return None
 
 
 def can_manage_products(user):
@@ -144,8 +158,8 @@ def show_category(request, category_name, template_name):
         # Only look at products from the category page that is open
         category_matches = shop_item.category.name == category_name
 
-        # Add each used sub category once
-        if category_matches and shop_item.sub_category.name not in sub_categories:
+        # Add each used sub category once, only when the product has one
+        if category_matches and shop_item.sub_category and shop_item.sub_category.name not in sub_categories:
             sub_categories.append(shop_item.sub_category.name)
 
     available_brands = []
@@ -157,7 +171,10 @@ def show_category(request, category_name, template_name):
         # All accepts every type, otherwise the names must match
         sub_category_matches = (
             selected_sub_category == "All" or
-            shop_item.sub_category.name == selected_sub_category
+            (
+                shop_item.sub_category is not None and
+                shop_item.sub_category.name == selected_sub_category
+            )
         )
 
         # Do not add the same brand more than once
@@ -176,7 +193,10 @@ def show_category(request, category_name, template_name):
         category_matches = shop_item.category.name == category_name
         sub_category_matches = (
             selected_sub_category == "All" or
-            shop_item.sub_category.name == selected_sub_category
+            (
+                shop_item.sub_category is not None and
+                shop_item.sub_category.name == selected_sub_category
+            )
         )
         name_matches = search_name == "" or search_name in shop_item.name.lower()
         brand_matches = brand == "All" or shop_item.brand == brand
@@ -272,7 +292,7 @@ def add_product(request):
                 price=form.cleaned_data["price"],
                 category=form.cleaned_data["category"],
                 sub_category=form.cleaned_data["sub_category"],
-                owner=request.user,
+                owner=get_owner_from_category(form.cleaned_data["category"]),
             )
 
             # This command adds the new product to the database
@@ -378,6 +398,7 @@ def edit_product(request):
             product.price = form.cleaned_data["price"]
             product.category = form.cleaned_data["category"]
             product.sub_category = form.cleaned_data["sub_category"]
+            product.owner = get_owner_from_category(form.cleaned_data["category"])
 
             # Save the edited product values in the database
             product.save()
