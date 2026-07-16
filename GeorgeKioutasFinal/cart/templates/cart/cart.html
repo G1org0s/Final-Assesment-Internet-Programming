@@ -65,6 +65,8 @@
                                                 {% csrf_token %}
                                                 <!-- Hidden input sends the cart item id without showing it on screen -->
                                                 <input type="hidden" name="cart_item_id" value="{{ cart_item.id }}">
+                                                <!-- This keeps the user on the cart page after adding one -->
+                                                <input type="hidden" name="next" value="/cart/">
                                                 <button type="submit" class="btn btn-info btn-sm">
                                                     <i class="bi bi-plus-lg"></i>
                                                 </button>
@@ -76,6 +78,8 @@
                                                 {% csrf_token %}
                                                 <!-- This tells Django which cart item must be changed -->
                                                 <input type="hidden" name="cart_item_id" value="{{ cart_item.id }}">
+                                                <!-- This keeps the user on the cart page after removing one -->
+                                                <input type="hidden" name="next" value="/cart/">
                                                 <button type="submit" class="btn btn-warning btn-sm">
                                                     <i class="bi bi-dash-lg"></i>
                                                 </button>

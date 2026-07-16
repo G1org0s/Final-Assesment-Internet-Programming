@@ -4,7 +4,13 @@ from .forms import ReviewForm
 from .models import Review
 
 
-# This view opens the reviews page and checks the review form.
+
+
+# This viw opens the reviews page and saves a review from a logged in user
+
+
+
+
 def reviews(request):
     # Only logged in users can open and write reviews.
     if not request.user.is_authenticated:
@@ -46,6 +52,18 @@ def reviews(request):
         "form": form,
         "reviews": all_reviews,
     })
+
+
+
+
+
+
+
+# This view receives the AJAX star rating and saves it for one review
+
+
+
+
 
 
 def rate_review(request):

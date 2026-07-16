@@ -2,11 +2,21 @@ from django.shortcuts import render
 from .forms import ContactForm
 
 
+
+
+# This section keeps the simple contact messages while the server is running
 # Messages are kept here simple, like the list example in class.
 messages_list = []
 
 
-# This view opens the contact page and checks the contact form.
+
+
+# This section opens the contact page and checks the submitted contact form
+
+
+
+
+
 def contact(request):
     # This text is empty until a message is sent correct.
     message_sent = ""

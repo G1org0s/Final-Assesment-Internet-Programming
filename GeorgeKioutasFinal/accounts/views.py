@@ -4,6 +4,9 @@ from django.shortcuts import redirect, render
 from .forms import LoginForm, ProfileForm, RegisterForm
 
 
+
+
+# This section checks whether a user belongs to a product management group
 def user_can_manage_products(user):
     # Salesmen and Managers can see the custom management button
     if not user.is_authenticated:
@@ -17,6 +20,9 @@ def user_can_manage_products(user):
     return is_salesman or is_manager
 
 
+
+
+# This section checks the extra password rules used when an account is created
 def check_password_rules(password):
     # These start as false until the correct character is found
     has_capital = False
@@ -46,7 +52,12 @@ def check_password_rules(password):
     return ""
 
 
-# This view creates a new user account
+
+
+# This section creates a new user account and places it in the Customers group
+
+
+
 def register(request):
     # This stays empty when the password follows all the rules
     password_message = ""
@@ -101,7 +112,21 @@ def register(request):
     })
 
 
-# This view checks the username and password and then logs the user in
+
+
+
+
+
+
+
+
+# This section checks login details and starts or ends the user session
+
+
+
+
+
+
 def login_user(request):
     # This message is only filled when the login details are wrong
     message = ""
@@ -137,7 +162,23 @@ def logout_user(request):
     return redirect("/home/")
 
 
-# This view shows the profile details of the logged in user
+
+
+
+
+
+
+
+
+
+# This section shows and updates the profile details of the logged in user
+
+
+
+
+
+
+
 def profile(request):
     # Only logged in users can open this page
     if not request.user.is_authenticated:
@@ -151,7 +192,26 @@ def profile(request):
     })
 
 
+
+
+
+
+
+
+
+
+
+
 # This view lets the logged in user change their profile details
+
+
+
+
+
+
+
+
+
 def edit_profile(request):
     # Only logged in users can open this page
     if not request.user.is_authenticated:

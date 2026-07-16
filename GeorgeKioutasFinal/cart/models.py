@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from shop.models import Product
 
 
+# This section keeps the products that each logged in user places in their cart
 # This table keeps the products that a user has placed in the cart
 class CartItem(models.Model):
     # The cart item belongs to one logged in user

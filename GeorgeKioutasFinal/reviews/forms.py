@@ -1,7 +1,10 @@
 from django import forms
 
 
-# This form is for writing a fishing review
+# This section has the form used by customers to write a review
+
+
+
 class ReviewForm(forms.Form):
     # min_length and max_length are used for simple validation
     location = forms.CharField(label="Location", min_length=2, max_length=30)

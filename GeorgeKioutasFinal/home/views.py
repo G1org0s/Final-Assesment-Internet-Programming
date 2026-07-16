@@ -2,7 +2,14 @@ from django.shortcuts import render
 from shop.models import Product
 from trips.views import trips_list
 
-# This view shows the home page template
+
+
+# This section opens the home page and prepares the simple recommendations
+
+
+
+
+
 def home(request):
     # Read the last category that the user opened
     last_category = request.session.get("last_category", "")

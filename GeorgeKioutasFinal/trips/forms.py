@@ -1,6 +1,7 @@
 from django import forms
 
 
+# This section has the forms used to add and sort fishing trips
 # This form creates the boxes that user fills in the trips page
 class TripForm(forms.Form):
     # max_length is validation, so Django does not accept too much text

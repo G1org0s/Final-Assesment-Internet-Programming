@@ -118,26 +118,28 @@
                     {% for shop_item in items %}
                         <div class="col-md-4">
                             <div class="product-card h-100">
-                                {% if shop_item.photo %}
-                                    <img src="{% static shop_item.photo %}" alt="{{ shop_item.name }}" class="product-photo">
-                                {% endif %}
-                                <div class="product-details">
-                                    <h2 class="h5 fw-bold">{{ shop_item.name }}</h2>
-                                    <p>Category: {{ shop_item.category.name }}</p>
-                                    <p>Brand: {{ shop_item.brand }}</p>
-                                    <p>Price: {{ shop_item.price }} &euro;</p>
+                                <!-- Clicking this product information opens its full detail page -->
+                                <a href="{% url 'shop:product_details' %}?product_id={{ shop_item.id }}" class="product-link">
+                                    {% if shop_item.photo %}
+                                        <img src="{% static shop_item.photo %}" alt="{{ shop_item.name }}" class="product-photo">
+                                    {% endif %}
+                                    <div class="product-details">
+                                        <h2 class="h5 fw-bold">{{ shop_item.name }}</h2>
+                                        <p>Category: {{ shop_item.category.name }}</p>
+                                        <p>Brand: {{ shop_item.brand }}</p>
+                                        <p>Price: {{ shop_item.price }} &euro;</p>
+                                    </div>
+                                </a>
 
-                                    
-                                    <!-- This form adds the selected product to the cart -->
-                                    <form action="{% url 'cart:add_to_cart' %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="product_id" value="{{ shop_item.id }}">
-                                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
-                                        <button type="submit" class="btn btn-info btn-sm">
-                                            <i class="bi bi-cart-plus"></i>
-                                        </button>
-                                    </form>
-                                </div>
+                                <!-- This form adds the selected product to the cart -->
+                                <form action="{% url 'cart:add_to_cart' %}" method="post" class="product-cart-form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product_id" value="{{ shop_item.id }}">
+                                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                    <button type="submit" class="btn btn-info btn-sm">
+                                        <i class="bi bi-cart-plus"></i>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     {% empty %}

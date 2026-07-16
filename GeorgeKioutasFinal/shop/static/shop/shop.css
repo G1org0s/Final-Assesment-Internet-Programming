@@ -129,6 +129,35 @@ main {
     display: flex;
     align-items: flex-start;
     gap: 18px;
+    transition: transform 0.3s ease;
+}
+
+/* This makes a product card stand out a little when the mouse is on it */
+.product-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* This link opens the full product page when the product area is clicked */
+.product-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    flex: 1;
+    color: #111111;
+    text-decoration: none;
+}
+
+.product-link:visited,
+.product-link:hover {
+    color: #111111;
+    text-decoration: none;
+}
+
+/* This keeps the cart button separate from the clickable product information */
+.product-cart-form {
+    margin: 0;
+    align-self: flex-end;
 }
 
 .product-details {
@@ -164,6 +193,20 @@ main {
     border: 1px solid #dddddd;
     border-radius: 6px;
     background-color: white;
+}
+
+/* This is the larger product photo on the individual product page */
+.product-detail-photo {
+    width: 320px;
+    height: 280px;
+    object-fit: contain;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.product-detail-description {
+    line-height: 1.6;
 }
 
 .category-content-panel input,

@@ -2,7 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# This table keeps the main product categories, like Rods and Reels
+# This  keeps the three connected tables for categories and shop products. (Main categorieslike Rods and Reels etc.)
+
+
+
+
 class Category(models.Model):
     # Each category has a name and the path of its card photo
     name = models.CharField(max_length=100)
@@ -13,7 +17,14 @@ class Category(models.Model):
         return self.name
 
 
+
+
+
+
 # This table keeps the subcategories that belong to one main category
+
+
+
 class SubCategory(models.Model):
     # A sub category has a name, like Spinning or Casting
     name = models.CharField(max_length=100)
@@ -26,12 +37,24 @@ class SubCategory(models.Model):
         return self.name
 
 
+
+
+
+
 # This table keeps the products that users can search and filter
+
+
+
 class Product(models.Model):
+
+    
     # These fields keep the main information for each product
     name = models.CharField(max_length=200)
     brand = models.CharField(max_length=100)
     price = models.IntegerField()
+
+    # This keeps a short description that is shown on the product page
+    description = models.TextField(blank=True)
 
     # The database keeps the photo path, not the actual image file
     photo = models.CharField(max_length=200, blank=True)

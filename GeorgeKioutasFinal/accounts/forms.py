@@ -2,6 +2,10 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 
 
+# This section has the forms for user registration, login and profile editing
+
+
+
 # This form creates a new user and also asks for simple profile details
 class RegisterForm(forms.Form):
     # These are the details that the new user writes

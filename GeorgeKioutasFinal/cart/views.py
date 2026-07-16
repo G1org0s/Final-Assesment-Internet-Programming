@@ -5,7 +5,9 @@ from .models import CartItem
 from shop.models import Product
 
 
-# This small function calculates the cart prices
+
+
+# This section calculates the cart prices used by the cart and checkout pages
 def cart_prices(cart_items):
     # Start from zero before adding the product prices
     total_price = 0
@@ -23,6 +25,9 @@ def cart_prices(cart_items):
     return price_without_tax, tax, total_price
 
 
+
+
+# This section opens the logged in user's shopping cart
 def cart(request):
     # Only logged in users can use the cart
     if not request.user.is_authenticated:
@@ -43,6 +48,9 @@ def cart(request):
     })
 
 
+
+
+# This section adds products and changes or removes cart quantities
 def add_to_cart(request):
     # Only logged in users can add products to the cart
     if not request.user.is_authenticated:
@@ -95,6 +103,10 @@ def increase_quantity(request):
         cart_item.quantity = cart_item.quantity + 1
         cart_item.save()
 
+        # This returns to the page where the plus button was pressed
+        next_page = request.POST["next"]
+        return redirect(next_page)
+
     return redirect("/cart/")
 
 
@@ -117,6 +129,10 @@ def decrease_quantity(request):
         else:
             cart_item.save()
 
+        # This returns to the page where the minus button was pressed
+        next_page = request.POST["next"]
+        return redirect(next_page)
+
     return redirect("/cart/")
 
 
@@ -136,6 +152,9 @@ def delete_item(request):
     return redirect("/cart/")
 
 
+
+
+# This section shows checkout and completes the simple purchase simulation
 def checkout(request):
     # Only logged in users can open checkout
     if not request.user.is_authenticated:

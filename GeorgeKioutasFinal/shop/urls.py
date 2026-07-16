@@ -5,6 +5,9 @@ from . import views
 app_name = "shop"
 
 # This url sends the shop link to the shop view.
+
+
+
 urlpatterns = [
     path('shop/', views.shop, name='shop'),
     path('shop/manage/', views.manage_products, name='manage_products'),
@@ -16,6 +19,7 @@ urlpatterns = [
     path('shop/delete-category/', views.delete_category, name='delete_category'),
     path('shop/delete-sub-category/', views.delete_sub_category, name='delete_sub_category'),
     path('shop/category/', views.category_page, name='category_page'),
+    path('shop/product/', views.product_details, name='product_details'),
     path('shop/Rods', views.rods, name='rods'),
     path('shop/Reels', views.reels, name='reels'),
     path('shop/Lines', views.lines, name='lines'),

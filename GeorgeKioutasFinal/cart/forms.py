@@ -1,6 +1,7 @@
 from django import forms
 
 
+# This section has the form used by the customer during checkout
 # This form asks the customer for checkout information
 class CheckoutForm(forms.Form):
     # These fields are the simple delivery details for the order

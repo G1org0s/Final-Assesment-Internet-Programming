@@ -1,7 +1,15 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
+from cart.models import CartItem
 from .forms import CategoryAddForm, ProductEditForm, ProductSearchForm, SubCategoryAddForm, SubCategoryForm
 from .models import Category, Product, SubCategory
+
+
+
+# This section has the small helper functions for product owners and permissions
+
+
+
 
 
 def get_owner_from_category(category):
@@ -39,6 +47,24 @@ def is_manager(user):
 
     # exists returns True when this user belongs to the Managers group
     return user.groups.filter(name="Managers").exists()
+
+
+
+
+
+
+
+
+
+
+
+
+# This section saves product and category photos after a manager uploads them
+
+
+
+
+
 
 
 def save_product_photo(product, photo_file):
@@ -85,13 +111,30 @@ def save_category_photo(category, photo_file):
     category.save()
 
 
-# This small function is used when products are sorted by price
+
+
+# This helper returns a price when the shop results need sorting
 def product_price(shop_item):
     # The sorting command uses the returned product price
     return shop_item.price
 
 
-# This view opens the main shop page with only the category cards
+
+
+
+
+
+
+
+# This section opens the shop categories and filters products by the chosen rules
+
+
+
+
+
+
+
+
 
 
 def shop(request):
@@ -226,7 +269,23 @@ def show_category(request, category_name, template_name):
     })
 
 
-# These views open each shop category page
+
+
+
+
+
+
+
+
+# This section opens the five standard category pages and any future category page
+
+
+
+
+
+
+
+
 
 
 def rods(request):
@@ -255,6 +314,60 @@ def category_page(request):
     return show_category(request, category_name, "shop/category.html")
 
 
+
+
+
+
+
+
+
+
+# This section opens one selected product and checks whether it is already in the cart
+
+
+
+
+
+
+def product_details(request):
+    # The product number comes from the product card link
+    product_id = request.GET["product_id"]
+
+    # Find the selected product and send it to its detail page
+    product = Product.objects.get(id=product_id)
+
+    # This stays empty until the logged in user adds this product to the cart
+    cart_item = None
+
+    if request.user.is_authenticated:
+        # This checks whether this product is already inside this user's cart
+        cart_items = CartItem.objects.filter(user=request.user, product=product)
+
+        if cart_items:
+            # There is only one cart row for this user and this product
+            cart_item = cart_items[0]
+
+    return render(request, "shop/product_details.html", {
+        "product": product,
+        "cart_item": cart_item,
+    })
+
+
+
+
+
+
+
+
+
+# Thisn opens the custom product management page for salesmen and managers
+
+
+
+
+
+
+
 def manage_products(request):
     # Customers and public users are not allowed to open this page
     if not can_manage_products(request.user):
@@ -275,6 +388,25 @@ def manage_products(request):
     })
 
 
+
+
+
+
+
+
+
+
+
+
+
+# This, lets managers add products, categories and sub categories
+
+
+
+
+
+
+
 def add_product(request):
     # Only managers can add new products
     if not is_manager(request.user):
@@ -290,6 +422,7 @@ def add_product(request):
                 name=form.cleaned_data["name"],
                 brand=form.cleaned_data["brand"],
                 price=form.cleaned_data["price"],
+                description=form.cleaned_data["description"],
                 category=form.cleaned_data["category"],
                 sub_category=form.cleaned_data["sub_category"],
                 owner=get_owner_from_category(form.cleaned_data["category"]),
@@ -369,6 +502,28 @@ def add_sub_category(request):
     })
 
 
+
+
+
+
+
+
+
+
+
+
+
+# This section lets managers and the correct salesman edit one product
+
+
+
+
+
+
+
+
+
+
 def edit_product(request):
     # Customers and public users are not allowed to edit products
     if not can_manage_products(request.user):
@@ -396,6 +551,7 @@ def edit_product(request):
             product.name = form.cleaned_data["name"]
             product.brand = form.cleaned_data["brand"]
             product.price = form.cleaned_data["price"]
+            product.description = form.cleaned_data["description"]
             product.category = form.cleaned_data["category"]
             product.sub_category = form.cleaned_data["sub_category"]
             product.owner = get_owner_from_category(form.cleaned_data["category"])
@@ -410,6 +566,7 @@ def edit_product(request):
             "name": product.name,
             "brand": product.brand,
             "price": product.price,
+            "description": product.description,
             "category": product.category,
             "sub_category": product.sub_category,
         })
@@ -418,6 +575,28 @@ def edit_product(request):
         "form": form,
         "product": product,
     })
+
+
+
+
+
+
+
+
+
+
+
+
+
+# This section lets managers delete products, categories and sub categories
+
+
+
+
+
+
+
+
 
 
 def delete_product(request):

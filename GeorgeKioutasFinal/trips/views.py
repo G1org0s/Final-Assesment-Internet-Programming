@@ -2,6 +2,8 @@ from django.shortcuts import render
 from .forms import SortTripsForm, TripForm
 
 
+
+# This section keeps the saved example trips used by the trips page
 # This list is used like the task list from the lesson example.
 trips_list = [
     {
@@ -47,6 +49,9 @@ trips_list = [
 ]
 
 
+
+
+# This section has small helper functions used when trips are added and sorted
 def next_trip_id():
     # This makes a simple new id for the next trip.
     biggest_id = 0
@@ -63,7 +68,9 @@ def trip_date(trip):
     return trip["trip_date"]
 
 
-# This view opens the trips page and checks the trip form.
+
+
+# This section opens the trips page and handles add, complete, delete and sort actions
 def trips(request):
     sort_order = "earliest"
     weather_text = "Partly cloudy (30.5 C)"

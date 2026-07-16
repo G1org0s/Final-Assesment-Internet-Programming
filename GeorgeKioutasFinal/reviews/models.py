@@ -1,7 +1,8 @@
 from django.db import models
 
 
-# This table keeps the reviews that customers write.
+# This section keeps the customer reviews and their selected star rating
+
 class Review(models.Model):
     name = models.CharField(max_length=30)
     location = models.CharField(max_length=30)

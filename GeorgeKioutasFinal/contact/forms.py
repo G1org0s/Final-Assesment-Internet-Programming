@@ -1,7 +1,8 @@
 from django import forms
 
 
-# This form is for the contact page
+# This section has the form used to send a contact message
+
 class ContactForm(forms.Form):
     # These rules are the validation for the contact form
     name = forms.CharField(label="Name", min_length=2, max_length=30)
