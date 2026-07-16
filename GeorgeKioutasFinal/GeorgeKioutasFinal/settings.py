@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
+import os
 from pathlib import Path
 
 
@@ -19,13 +20,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k*n4csu$@ldttqeiv(q#abmef3c(4qb@mi1m1n==d0!kk$wu49'
+# PythonAnywhere will set this value in its WSGI file when the site is live
+IS_PYTHONANYWHERE = os.environ.get("PYTHONANYWHERE_SITE") == "True"
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# PythonAnywhere keeps the live secret key outside this project folder
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    "django-insecure-k*n4csu$@ldttqeiv(q#abmef3c(4qb@mi1m1n==d0!kk$wu49"
+)
 
-ALLOWED_HOSTS = []
+# Debug information must not be visible on the live website
+DEBUG = False
+
+# This is the public PythonAnywhere address for the project
+ALLOWED_HOSTS = [
+    "g1org0s.pythonanywhere.com",
+    "127.0.0.1",
+    "localhost",
+]
 
 
 # Application definition
@@ -127,7 +139,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "/static/"
+
+# collectstatic copies all CSS, JavaScript, and images into this one folder
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # This is for the shared files like DarkMode and Navbar.
 STATICFILES_DIRS = [

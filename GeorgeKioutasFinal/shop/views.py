@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from cart.models import CartItem
@@ -75,8 +76,13 @@ def save_product_photo(product, photo_file):
     # Use the product id so every product gets its own photo name
     file_name = "product_" + str(product.id) + ".png"
 
-    # This is the folder where the photo will be saved
-    file_path = "shop/static/shop/products/" + file_name
+    # Pick the folder used by the live site or the local project
+    if settings.IS_PYTHONANYWHERE:
+        # Live photos go to staticfiles so PythonAnywhere can show them
+        file_path = settings.STATIC_ROOT / "shop" / "products" / file_name
+    else:
+        # Locally, photos stay in the shop static folder
+        file_path = "shop/static/shop/products/" + file_name
 
     # open creates the new image file at the selected folder path
     # wb means that the file is opened for writing image data
@@ -97,8 +103,13 @@ def save_category_photo(category, photo_file):
     # Use the category id so every category gets its own photo name
     file_name = "category_" + str(category.id) + ".png"
 
-    # This is the folder where the category photo will be saved
-    file_path = "shop/static/shop/" + file_name
+    # Pick the folder used by the live site or the local project
+    if settings.IS_PYTHONANYWHERE:
+        # Live photos go to staticfiles so PythonAnywhere can show them
+        file_path = settings.STATIC_ROOT / "shop" / file_name
+    else:
+        # Locally, photos stay in the shop static folder
+        file_path = "shop/static/shop/" + file_name
 
     # open creates the new image file at the selected folder path
     # wb means that the file is opened for writing image data
