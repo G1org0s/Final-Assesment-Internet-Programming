@@ -40,7 +40,7 @@ Repository:
 
 
 
-	Repository URL :  https://github.com/G1org0s/Final-Assesment-Internet-Programming.git
+	https://github.com/G1org0s/Final-Assesment-Internet-Programming.git
 
 
 
@@ -50,4 +50,4 @@ YouTube:
 
 
 
-	YouTube URL: https://youtu.be/9wiAbPo7zo8
+	https://youtu.be/9wiAbPo7zo8
